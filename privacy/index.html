@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentingRadar Importer — Privacy Policy</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8f9fa;color:#1a1a2e;line-height:1.7;padding:0}
+header{background:#0f1117;color:#fff;padding:40px 24px;text-align:center}
+header h1{font-size:1.6rem;font-weight:700;margin-bottom:4px}
+header p{font-size:.95rem;color:#9399b2}
+main{max-width:720px;margin:0 auto;padding:40px 24px 60px}
+h2{font-size:1.15rem;font-weight:700;margin:32px 0 12px;color:#0f1117}
+p{margin-bottom:14px;font-size:.95rem;color:#3a3a5c}
+ul{margin:0 0 14px 24px}
+ul li{font-size:.95rem;color:#3a3a5c;margin-bottom:6px}
+strong{color:#1a1a2e}
+.effective{font-size:.85rem;color:#6b7280;margin-bottom:28px}
+.contact{background:#eef1ff;border-radius:8px;padding:16px 20px;margin-top:24px}
+.contact p{margin:0;color:#3a3a5c}
+footer{text-align:center;padding:24px;font-size:.8rem;color:#9399b2;border-top:1px solid #e5e7eb}
+</style>
+</head>
+<body>
+<header>
+<h1>RentingRadar Importer — Privacy Policy</h1>
+<p>Chrome Extension</p>
+</header>
+<main>
+<p class="effective">Effective date: March 19, 2026</p>
+
+<h2>Overview</h2>
+<p>RentingRadar Importer ("the Extension") is a Chrome browser extension that helps users import rental property data from listing websites into the RentingRadar CRM application. We are committed to protecting your privacy. This policy explains what data the Extension accesses, how it is used, and how it is stored.</p>
+
+<h2>Data We Access</h2>
+<p>The Extension accesses <strong>website content</strong> (HTML text) from rental listing pages only when you explicitly initiate an import by pasting a URL and clicking "Auto Import" in the RentingRadar CRM. The accessed content is limited to the text of the listing page and is used solely to extract property details such as rent, bedrooms, bathrooms, amenities, and other publicly available listing information.</p>
+
+<h2>Data We Do NOT Collect</h2>
+<p>The Extension does not collect, store, or transmit any of the following:</p>
+<ul>
+<li>Personally identifiable information (names, email addresses, phone numbers)</li>
+<li>Health, financial, or authentication information</li>
+<li>Browsing history or web activity</li>
+<li>Location data</li>
+<li>Cookies, credentials, or form data</li>
+<li>Keystroke, mouse, or scroll activity</li>
+</ul>
+
+<h2>How Data Is Processed</h2>
+<p>When you request an import, the Extension fetches the listing page HTML and extracts property data using one of two methods:</p>
+<ul>
+<li><strong>Built-in pattern matching:</strong> Regex-based extraction that runs entirely within the Extension. No data leaves your browser.</li>
+<li><strong>Local AI processing (optional):</strong> If you have Ollama installed on your computer, the Extension may send the listing text to your local Ollama instance (localhost) for AI-powered extraction. This communication never leaves your machine — Ollama runs entirely on your own computer.</li>
+</ul>
+<p>In both cases, all processing happens locally. No listing data, extracted property details, or any other information is sent to external servers, third-party services, or cloud APIs.</p>
+
+<h2>Data Storage</h2>
+<p>The Extension itself does not store any data. Extracted property information is passed directly to the RentingRadar CRM application running in your browser, where it is saved to your browser's local storage. This data remains on your computer and is never transmitted externally.</p>
+
+<h2>Third-Party Services</h2>
+<p>The Extension does not integrate with, send data to, or receive data from any third-party analytics, advertising, or tracking services.</p>
+
+<h2>Permissions</h2>
+<p>The Extension requests the <strong>"all URLs"</strong> host permission. This is required so the Extension can fetch rental listing pages from any website when you explicitly request an import. The Extension does not access any web pages in the background or without your direct action.</p>
+
+<h2>Data Sharing and Selling</h2>
+<p>We do not sell, transfer, or share any user data with third parties for any purpose. No data is used for advertising, analytics, creditworthiness assessment, or any purpose unrelated to the Extension's core function of importing rental property data.</p>
+
+<h2>Children's Privacy</h2>
+<p>The Extension is not directed at children under the age of 13 and does not knowingly collect any personal information from children.</p>
+
+<h2>Changes to This Policy</h2>
+<p>We may update this Privacy Policy from time to time. Any changes will be reflected on this page with an updated effective date. Continued use of the Extension after changes constitutes acceptance of the updated policy.</p>
+
+<h2>Contact</h2>
+<div class="contact">
+<p>If you have any questions about this Privacy Policy, please contact us at <strong>sabrina@summitcapllc.com</strong>.</p>
+</div>
+</main>
+<footer>&copy; 2026 RentingRadar. All rights reserved.</footer>
+</body>
+</html>
