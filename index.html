@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentingRadar — Rental Arbitrage CRM</title>
+<meta name="description" content="The all-in-one CRM built for rental arbitrage. Track leads, manage properties, and close deals faster with RentingRadar.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect rx='12' width='100' height='100' fill='%230f1117'/><path d='M30 65 L50 25 L70 65 Z' fill='%236381fa' opacity='.9'/><path d='M25 70 L50 35 L75 70 Z' fill='none' stroke='%236381fa' stroke-width='3'/></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d2e;--border:#2a2e3f;
+  --text:#e4e6f0;--text2:#9399b2;--text3:#5a5f7a;
+  --primary:#6381fa;--primary-hover:#7b94ff;--primary-light:rgba(99,129,250,.12);
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+  --radius:10px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--primary);text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,17,23,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:-.3px}
+.nav-logo svg{width:28px;height:28px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{color:var(--text2);font-size:.9rem;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:var(--primary);color:#fff!important;padding:8px 20px;border-radius:var(--radius);font-weight:600;transition:background .15s}
+.nav-cta:hover{background:var(--primary-hover)}
+.hero{padding:140px 32px 80px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(99,129,250,.12) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--primary-light);color:var(--primary);font-size:.8rem;font-weight:600;padding:6px 14px;border-radius:20px;margin-bottom:24px;border:1px solid rgba(99,129,250,.2)}
+.hero h1{font-size:3.2rem;font-weight:800;line-height:1.15;max-width:700px;margin:0 auto 20px;letter-spacing:-.5px;background:linear-gradient(135deg,#fff 30%,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.15rem;color:var(--text2);max-width:560px;margin:0 auto 36px;line-height:1.7}
+.hero-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius);font-size:.95rem;font-weight:600;transition:all .15s;cursor:pointer;border:none}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover);transform:translateY(-1px);box-shadow:0 6px 24px rgba(99,129,250,.35)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--primary);color:#fff}
+.features{padding:100px 32px;max-width:1100px;margin:0 auto}
+.section-label{text-align:center;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--primary);margin-bottom:12px}
+.section-title{text-align:center;font-size:2.2rem;font-weight:800;margin-bottom:16px;letter-spacing:-.3px}
+.section-subtitle{text-align:center;color:var(--text2);font-size:1.05rem;max-width:560px;margin:0 auto 56px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;transition:all .2s}
+.feature-card:hover{border-color:rgba(99,129,250,.3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.feature-icon{width:44px;height:44px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.3rem}
+.feature-card h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.feature-card p{color:var(--text2);font-size:.9rem;line-height:1.6}
+.how-it-works{padding:100px 32px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.how-inner{max-width:900px;margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:56px}
+.step{text-align:center}
+.step-num{width:48px;height:48px;border-radius:50%;background:var(--primary);color:#fff;font-size:1.2rem;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.step h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+.step p{color:var(--text2);font-size:.9rem;line-height:1.6}
+.pricing{padding:100px 32px;max-width:1100px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;position:relative;transition:all .2s}
+.price-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.price-card.popular{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:1px}
+.price-card h3{font-size:1.15rem;font-weight:700;margin-bottom:4px}
+.price-card .price-desc{color:var(--text2);font-size:.85rem;margin-bottom:20px}
+.price-amount{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
+.price-amount .dollar{font-size:2.4rem;font-weight:800;color:#fff}
+.price-amount .period{color:var(--text2);font-size:.9rem}
+.price-yearly{color:var(--text3);font-size:.82rem;margin-bottom:24px}
+.price-features{list-style:none;margin-bottom:28px}
+.price-features li{padding:6px 0;font-size:.9rem;color:var(--text2);display:flex;align-items:center;gap:8px}
+.price-features li::before{content:'\2713';color:var(--primary);font-weight:700;font-size:.8rem}
+.price-btn{display:block;width:100%;text-align:center;padding:12px;border-radius:var(--radius);font-weight:600;font-size:.9rem;transition:all .15s;border:none;cursor:pointer}
+.price-btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.price-btn-outline:hover{border-color:var(--primary);color:#fff}
+.price-btn-fill{background:var(--primary);color:#fff}
+.price-btn-fill:hover{background:var(--primary-hover)}
+.extension{padding:100px 32px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ext-inner{max-width:800px;margin:0 auto;text-align:center}
+.ext-inner p.ext-desc{color:var(--text2);font-size:1.05rem;max-width:560px;margin:0 auto 32px;line-height:1.7}
+.ext-badges{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.ext-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 18px;font-size:.85rem;color:var(--text2)}
+.ext-badge strong{color:var(--text)}
+footer{padding:40px 32px;text-align:center;border-top:1px solid var(--border)}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px}
+.footer-links a{color:var(--text2);font-size:.85rem;transition:color .15s}
+.footer-links a:hover{color:#fff}
+.footer-copy{color:var(--text3);font-size:.8rem}
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .nav-links a:not(.nav-cta){display:none}
+  .hero{padding:120px 20px 60px}
+  .hero h1{font-size:2.2rem}
+  .features-grid,.steps,.pricing-grid{grid-template-columns:1fr}
+  .features,.pricing{padding:60px 20px}
+  .how-it-works,.extension{padding:60px 20px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:1.8rem}
+  .hero-buttons{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="7" fill="#6381fa"/>
+      <path d="M16 6L8 17h5v9l7-11h-5L16 6z" fill="#fff" fill-opacity=".95"/>
+    </svg>
+    RentingRadar
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="https://app.rentingradar.com" class="nav-cta">Open App</a>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-badge">Now in Beta — Free to get started</div>
+  <h1>The CRM Built for Rental Arbitrage</h1>
+  <p>Track leads, manage your pipeline, and close deals faster. RentingRadar is the all-in-one workspace designed specifically for rental arbitrage investors.</p>
+  <div class="hero-buttons">
+    <a href="https://app.rentingradar.com" class="btn btn-primary">Get Started Free</a>
+    <a href="#features" class="btn btn-secondary">See Features</a>
+  </div>
+</section>
+<section class="features" id="features">
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Everything You Need to Scale</h2>
+  <p class="section-subtitle">Purpose-built tools that replace your spreadsheets, sticky notes, and scattered workflows.</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">📊</div><h3>Visual Pipeline</h3><p>Drag-and-drop Kanban board to track every property from lead to signed lease.</p></div>
+    <div class="feature-card"><div class="feature-icon">🏠</div><h3>Property Profiles</h3><p>Rich detail pages for every property with financials, photos, activity logs, and contacts.</p></div>
+    <div class="feature-card"><div class="feature-icon">💰</div><h3>Deal Calculator</h3><p>Built-in financial analysis with rent estimates, expense tracking, and profit projections.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔍</div><h3>Smart Search</h3><p>Instantly find any property, contact, phone number, or email across your entire database.</p></div>
+    <div class="feature-card"><div class="feature-icon">📥</div><h3>Chrome Extension</h3><p>Import listings from Zillow, Apartments.com, Redfin, and 15+ sites with one click.</p></div>
+    <div class="feature-card"><div class="feature-icon">🎨</div><h3>Customizable Themes</h3><p>Dark mode, light mode, and multiple accent colors. Make your workspace yours.</p></div>
+    <div class="feature-card"><div class="feature-icon">📈</div><h3>Analytics Dashboard</h3><p>Visual charts showing pipeline health, conversion rates, and portfolio performance.</p></div>
+    <div class="feature-card"><div class="feature-icon">📝</div><h3>Activity Logs</h3><p>Rich text notes with calls, emails, visits, and follow-up tracking for every property.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Privacy First</h3><p>Your data lives in your browser. No external servers, no tracking, no third-party access.</p></div>
+  </div>
+</section>
+<section class="how-it-works" id="how-it-works">
+  <div class="how-inner">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Up and Running in Minutes</h2>
+    <p class="section-subtitle">No installation, no setup wizards, no credit card required.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h3>Open the App</h3><p>Visit app.rentingradar.com and your workspace is ready instantly.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Add Properties</h3><p>Manually add leads or use the Chrome Extension to import listings.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Manage &amp; Close</h3><p>Track your pipeline, log activities, and move deals forward.</p></div>
+    </div>
+  </div>
+</section>
+<section class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Simple, Transparent Pricing</h2>
+  <p class="section-subtitle">Start free and upgrade as your portfolio grows.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <h3>Free</h3><p class="price-desc">Perfect for getting started</p>
+      <div class="price-amount"><span class="dollar">$0</span><span class="period">/mo</span></div>
+      <p class="price-yearly">&nbsp;</p>
+      <ul class="price-features"><li>Up to 50 properties</li><li>Visual pipeline</li><li>Property profiles</li><li>Activity logging</li><li>Chrome Extension</li></ul>
+      <a href="https://app.rentingradar.com" class="price-btn price-btn-outline">Get Started</a>
+    </div>
+    <div class="price-card popular">
+      <div class="popular-badge">Most Popular</div>
+      <h3>Basic</h3><p class="price-desc">For growing portfolios</p>
+      <div class="price-amount"><span class="dollar">$10.99</span><span class="period">/mo</span></div>
+      <p class="price-yearly">or $89.99/year (~$7.50/mo)</p>
+      <ul class="price-features"><li>Up to 250 properties</li><li>Everything in Free</li><li>Deal calculator</li><li>Advanced analytics</li><li>Priority support</li></ul>
+      <a href="https://app.rentingradar.com" class="price-btn price-btn-fill">Start Basic</a>
+    </div>
+    <div class="price-card">
+      <h3>Pro</h3><p class="price-desc">For serious operators</p>
+      <div class="price-amount"><span class="dollar">$17.99</span><span class="period">/mo</span></div>
+      <p class="price-yearly">or $149.99/year (~$12.50/mo)</p>
+      <ul class="price-features"><li>Unlimited properties</li><li>Everything in Basic</li><li>Data export</li><li>Custom branding</li><li>Early access to new features</li></ul>
+      <a href="https://app.rentingradar.com" class="price-btn price-btn-outline">Start Pro</a>
+    </div>
+  </div>
+</section>
+<section class="extension" id="extension">
+  <div class="ext-inner">
+    <div class="section-label">Chrome Extension</div>
+    <h2 class="section-title">Import Listings Instantly</h2>
+    <p class="ext-desc">Browse rental listings as you normally would. When you find one worth tracking, import it into RentingRadar with a single click.</p>
+    <a href="#" class="btn btn-primary">Add to Chrome — It's Free</a>
+    <div class="ext-badges">
+      <div class="ext-badge"><strong>15+</strong> sites supported</div>
+      <div class="ext-badge"><strong>One-click</strong> import</div>
+      <div class="ext-badge"><strong>100%</strong> local processing</div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-links">
+    <a href="https://app.rentingradar.com">App</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="mailto:sabrina@summitcapllc.com">Contact</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 RentingRadar. All rights reserved.</p>
+</footer>
+</body>
+</html>
