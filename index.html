@@ -29,6 +29,7 @@
 <!-- Firebase & GIS -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <!-- JSON-LD Structured Data -->
@@ -882,10 +883,25 @@ const FIREBASE_CONFIG = {
 const GIS_CLIENT_ID = '622768449810-s72d56u4fherfif72the4cffb8epk1ml.apps.googleusercontent.com';
 
 firebase.initializeApp(FIREBASE_CONFIG);
+var db = firebase.firestore();
 let currentUser = null;
+let currentUserTier = 'free';
 
-firebase.auth().onAuthStateChanged(function(user){
+firebase.auth().onAuthStateChanged(async function(user){
   currentUser = user;
+  if(user){
+    // Read tier from Firestore
+    try {
+      var userDoc = await db.collection('users').doc(user.uid).get();
+      if(userDoc.exists && userDoc.data().tier){
+        currentUserTier = userDoc.data().tier;
+      } else {
+        currentUserTier = 'free';
+      }
+    } catch(e){ currentUserTier = 'free'; }
+  } else {
+    currentUserTier = 'free';
+  }
   updateAuthUI();
 });
 
@@ -971,7 +987,7 @@ function updateAuthUI(){
       </div>`;
 
     // Update all auth-gate buttons to link directly to the app and change text
-    var userTier = 'free'; // Default — website assumes Free; actual tier lives in app localStorage
+    var userTier = currentUserTier || 'free';
     document.querySelectorAll('.auth-gate').forEach(function(el){
       if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
       el.href = 'https://app.rentingradar.com';
