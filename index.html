@@ -272,6 +272,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .price-card .price-btn{margin-top:auto}
 .price-card{display:flex;flex-direction:column}
 .price-features{flex:1}
+.billing-toggle{display:inline-flex;align-items:center;gap:10px;margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:4px}
+.billing-toggle .bt-opt{padding:6px 18px;border-radius:20px;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .15s;color:var(--text3)}
+.billing-toggle .bt-opt.active{background:var(--primary);color:#fff}
+.billing-toggle .bt-opt:not(.active):hover{color:var(--text)}
+.billing-save-badge{font-size:.7rem;font-weight:700;color:#fff;background:#10b981;padding:3px 10px;border-radius:10px;margin-left:6px}
+.price-old{text-decoration:line-through;color:var(--text3);font-size:1.3rem;font-weight:600;margin-right:4px}
 
 /* ===== CHROME EXTENSION ===== */
 .extension{padding:100px 32px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -688,55 +694,13 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <div class="section-label">Pricing</div>
   <h2 class="section-title">Simple, Transparent Pricing</h2>
   <p class="section-subtitle">Start free and upgrade as your portfolio grows. No hidden fees, cancel anytime.</p>
-  <div class="pricing-grid">
-    <div class="price-card" data-tier="free">
-      <h3>Free</h3>
-      <p class="price-desc">Perfect for getting started</p>
-      <div class="price-amount"><span class="dollar">$0.00</span><span class="period">/month</span></div>
-      <p class="price-yearly">Free forever</p>
-      <ul class="price-features">
-        <li>Up to 50 properties</li>
-        <li>Pipeline view</li>
-        <li>Contact management</li>
-        <li>Follow-up reminders & notifications</li>
-        <li>Expense tracking</li>
-      </ul>
-      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" data-plan="free" onclick="handleAuthGate()">Get Started Free</a>
-    </div>
-    <div class="price-card popular" data-tier="basic">
-      <div class="popular-badge">Most Popular</div>
-      <h3>Basic</h3>
-      <p class="price-desc">For growing portfolios</p>
-      <div class="price-amount"><span class="dollar">$7.50</span><span class="period">/month</span></div>
-      <p class="price-yearly">Billed annually at $89.99/year · $10.99/mo if monthly</p>
-      <ul class="price-features">
-        <li>Up to 250 properties</li>
-        <li>Everything in Free</li>
-        <li>CSV import & export</li>
-        <li>Dark mode & 8 color themes</li>
-        <li>Property analysis</li>
-        <li>ROI calculator</li>
-      </ul>
-      <a href="javascript:void(0)" class="price-btn price-btn-fill auth-gate" data-plan="basic" onclick="handleAuthGate()">Start Basic Plan</a>
-    </div>
-    <div class="price-card" data-tier="pro">
-      <h3>Pro</h3>
-      <p class="price-desc">For serious operators</p>
-      <div class="price-amount"><span class="dollar">$12.50</span><span class="period">/month</span></div>
-      <p class="price-yearly">Billed annually at $149.99/year · $17.99/mo if monthly</p>
-      <ul class="price-features">
-        <li>Unlimited properties</li>
-        <li>Everything in Basic</li>
-        <li>Automatic data extraction via extension</li>
-        <li>AI-powered data extraction</li>
-        <li>Advanced property analysis</li>
-        <li>.xlsx import & export</li>
-        <li>Extension + AI engine setup walkthrough</li>
-        <li>Priority feature requests</li>
-      </ul>
-      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" data-plan="pro" onclick="handleAuthGate()">Start Pro Plan</a>
+  <div style="text-align:center">
+    <div class="billing-toggle" id="billingToggle">
+      <div class="bt-opt" data-period="monthly" onclick="setBillingPeriod('monthly')">Monthly</div>
+      <div class="bt-opt active" data-period="yearly" onclick="setBillingPeriod('yearly')">Yearly <span class="billing-save-badge">Save up to 31%</span></div>
     </div>
   </div>
+  <div class="pricing-grid" id="pricingGrid"></div>
 </section>
 
 <!-- CHROME EXTENSION -->
@@ -952,7 +916,7 @@ function handleSignOut(){
 
 function handleAuthGate(){
   if(currentUser){
-    window.location.href = 'https://app.rentingradar.com';
+    window.open('https://app.rentingradar.com', '_blank');
   } else {
     handleSignIn();
   }
@@ -967,7 +931,7 @@ function updateAuthUI(){
     const photo = currentUser.photoURL;
     const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().substring(0,2);
     authEl.innerHTML = `
-      <a href="https://app.rentingradar.com" class="nav-cta">Open App</a>
+      <a href="https://app.rentingradar.com" target="_blank" class="nav-cta">Open App</a>
       <div class="nav-user" onclick="document.getElementById('navUserMenu').classList.toggle('open')">
         ${photo ? '<img src="'+photo+'" alt="">' : '<div style="width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;border:2px solid var(--border)">'+initials+'</div>'}
         <div class="nav-user-menu" id="navUserMenu">
@@ -975,7 +939,7 @@ function updateAuthUI(){
             <div style="font-weight:600;color:#fff">${name}</div>
             <div style="color:var(--text3);font-size:.7rem;margin-top:2px">${currentUser.email||''}</div>
           </div>
-          <a href="https://app.rentingradar.com">
+          <a href="https://app.rentingradar.com" target="_blank">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             Open App
           </a>
@@ -991,6 +955,7 @@ function updateAuthUI(){
     document.querySelectorAll('.auth-gate').forEach(function(el){
       if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
       el.href = 'https://app.rentingradar.com';
+      el.target = '_blank';
       el.onclick = null;
       var orig = el.dataset.origText;
       var plan = el.dataset.plan;
@@ -1049,6 +1014,72 @@ document.addEventListener('click', function(e){
     if(menu) menu.classList.remove('open');
   }
 });
+
+// ===== BILLING TOGGLE & DYNAMIC PRICING =====
+var billingPeriod = 'yearly';
+
+var TIERS = {
+  free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Perfect for getting started', features:['Up to 50 properties','Pipeline view','Contact management','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes','Property analysis','Automatic data extraction','AI-powered extraction','ROI calculator'] },
+  basic: { name:'Basic', monthly:10.99, yearly:89.99, desc:'For growing portfolios', features:['Up to 250 properties','Everything in Free','CSV import & export','Dark mode & 8 color themes','Property analysis','ROI calculator'], disabled:['Automatic data extraction via extension','AI-powered extraction'] },
+  pro:   { name:'Pro',   monthly:17.99, yearly:149.99, desc:'For serious operators', features:['Unlimited properties','Everything in Basic','Automatic data extraction via extension','AI-powered data extraction','Advanced property analysis','.xlsx import & export','Extension + AI engine setup walkthrough','Priority feature requests'], disabled:[] }
+};
+
+function setBillingPeriod(period){
+  billingPeriod = period;
+  document.querySelectorAll('.billing-toggle .bt-opt').forEach(function(el){
+    el.classList.toggle('active', el.dataset.period === period);
+  });
+  renderPricingCards();
+}
+
+function renderPricingCards(){
+  var grid = document.getElementById('pricingGrid');
+  if(!grid) return;
+  var isYearly = billingPeriod === 'yearly';
+  var html = '';
+  ['free','basic','pro'].forEach(function(tier){
+    var t = TIERS[tier];
+    var isPopular = tier === 'basic';
+    var priceHtml, billedNote;
+    if(t.monthly === 0){
+      priceHtml = '<span class="dollar">$0.00</span><span class="period">/month</span>';
+      billedNote = 'Free forever';
+    } else if(isYearly){
+      var perMonth = (t.yearly / 12).toFixed(2);
+      priceHtml = '<span class="price-old">$'+t.monthly.toFixed(2)+'</span><span class="dollar">$'+perMonth+'</span><span class="period">/mo</span>';
+      billedNote = 'Billed annually at $'+t.yearly.toFixed(2)+'/year';
+    } else {
+      priceHtml = '<span class="dollar">$'+t.monthly.toFixed(2)+'</span><span class="period">/mo</span>';
+      billedNote = 'Billed monthly';
+    }
+    var btnText, btnClass;
+    if(!currentUser){
+      if(tier === 'free'){ btnText = 'Get Started Free'; btnClass = 'price-btn-outline'; }
+      else if(tier === 'basic'){ btnText = 'Start Basic Plan'; btnClass = 'price-btn-fill'; }
+      else { btnText = 'Start Pro Plan'; btnClass = 'price-btn-outline'; }
+    } else {
+      btnText = ''; btnClass = '';
+    }
+    html += '<div class="price-card'+(isPopular?' popular':'')+'" data-tier="'+tier+'">';
+    if(isPopular) html += '<div class="popular-badge">Most Popular</div>';
+    html += '<h3>'+t.name+'</h3>';
+    html += '<p class="price-desc">'+t.desc+'</p>';
+    html += '<div class="price-amount">'+priceHtml+'</div>';
+    html += '<p class="price-yearly">'+billedNote+'</p>';
+    html += '<ul class="price-features">';
+    t.features.forEach(function(f){ html += '<li>'+f+'</li>'; });
+    t.disabled.forEach(function(f){ html += '<li style="color:var(--text3);opacity:.5">'+f+'</li>'; });
+    html += '</ul>';
+    html += '<a href="javascript:void(0)" class="price-btn '+btnClass+' auth-gate" data-plan="'+tier+'" data-orig-text="'+btnText+'" onclick="handleAuthGate()">'+btnText+'</a>';
+    html += '</div>';
+  });
+  grid.innerHTML = html;
+  // Re-apply auth state to the new buttons
+  if(currentUser) updateAuthUI();
+}
+
+// Initial render
+renderPricingCards();
 </script>
 
 </body>
