@@ -261,6 +261,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .price-btn-outline:hover{border-color:var(--primary);color:#fff}
 .price-btn-fill{background:var(--primary);color:#fff}
 .price-btn-fill:hover{background:var(--primary-hover);box-shadow:0 4px 20px var(--primary-glow)}
+.price-card.current-plan{border-color:#10b981;box-shadow:0 0 0 1px #10b981,0 12px 40px rgba(16,185,129,.12)}
+.price-card.current-plan.popular{border-color:#10b981;box-shadow:0 0 0 1px #10b981,0 12px 40px rgba(16,185,129,.12)}
+.price-btn-current{background:#10b981;color:#fff;pointer-events:none}
+.price-btn-upgrade{background:var(--primary);color:#fff}
+.price-btn-upgrade:hover{background:var(--primary-hover);box-shadow:0 4px 20px var(--primary-glow)}
+.price-btn-downgrade{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.price-btn-downgrade:hover{border-color:var(--text3);color:var(--text)}
+.price-card .price-btn{margin-top:auto}
+.price-card{display:flex;flex-direction:column}
+.price-features{flex:1}
 
 /* ===== CHROME EXTENSION ===== */
 .extension{padding:100px 32px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -678,22 +688,21 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <h2 class="section-title">Simple, Transparent Pricing</h2>
   <p class="section-subtitle">Start free and upgrade as your portfolio grows. No hidden fees, cancel anytime.</p>
   <div class="pricing-grid">
-    <div class="price-card">
+    <div class="price-card" data-tier="free">
       <h3>Free</h3>
       <p class="price-desc">Perfect for getting started</p>
       <div class="price-amount"><span class="dollar">$0.00</span><span class="period">/month</span></div>
       <p class="price-yearly">Free forever</p>
       <ul class="price-features">
         <li>Up to 50 properties</li>
-        <li>Sales dashboard & pipeline</li>
-        <li>Property profiles & details</li>
-        <li>Activity logging with rich text</li>
-        <li>Follow-up & meeting tracking</li>
-        <li>Smart search</li>
+        <li>Pipeline view</li>
+        <li>Contact management</li>
+        <li>Follow-up reminders & notifications</li>
+        <li>Expense tracking</li>
       </ul>
-      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" onclick="handleAuthGate()">Get Started Free</a>
+      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" data-plan="free" onclick="handleAuthGate()">Get Started Free</a>
     </div>
-    <div class="price-card popular">
+    <div class="price-card popular" data-tier="basic">
       <div class="popular-badge">Most Popular</div>
       <h3>Basic</h3>
       <p class="price-desc">For growing portfolios</p>
@@ -702,17 +711,14 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
       <ul class="price-features">
         <li>Up to 250 properties</li>
         <li>Everything in Free</li>
-        <li>Deal calculator & projected returns</li>
-        <li>Competitor analysis (20 comps/property)</li>
-        <li>Expense tracking & NOI</li>
-        <li>Deal Temperature scoring</li>
-        <li>Themes & accent colors</li>
-        <li>CSV export</li>
-        <li>Priority support</li>
+        <li>CSV import & export</li>
+        <li>Dark mode & 8 color themes</li>
+        <li>Property analysis</li>
+        <li>ROI calculator</li>
       </ul>
-      <a href="javascript:void(0)" class="price-btn price-btn-fill auth-gate" onclick="handleAuthGate()">Start Basic Plan</a>
+      <a href="javascript:void(0)" class="price-btn price-btn-fill auth-gate" data-plan="basic" onclick="handleAuthGate()">Start Basic Plan</a>
     </div>
-    <div class="price-card">
+    <div class="price-card" data-tier="pro">
       <h3>Pro</h3>
       <p class="price-desc">For serious operators</p>
       <div class="price-amount"><span class="dollar">$12.50</span><span class="period">/month</span></div>
@@ -720,13 +726,14 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
       <ul class="price-features">
         <li>Unlimited properties</li>
         <li>Everything in Basic</li>
-        <li>AI-powered property extraction</li>
-        <li>Advanced data export</li>
-        <li>Custom branding</li>
-        <li>Early access to new features</li>
-        <li>Dedicated support</li>
+        <li>Automatic data extraction via extension</li>
+        <li>AI-powered data extraction</li>
+        <li>Advanced property analysis</li>
+        <li>.xlsx import & export</li>
+        <li>Extension + AI engine setup walkthrough</li>
+        <li>Priority feature requests</li>
       </ul>
-      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" onclick="handleAuthGate()">Start Pro Plan</a>
+      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" data-plan="pro" onclick="handleAuthGate()">Start Pro Plan</a>
     </div>
   </div>
 </section>
@@ -964,15 +971,35 @@ function updateAuthUI(){
       </div>`;
 
     // Update all auth-gate buttons to link directly to the app and change text
+    var userTier = 'free'; // Default — website assumes Free; actual tier lives in app localStorage
     document.querySelectorAll('.auth-gate').forEach(function(el){
       if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
       el.href = 'https://app.rentingradar.com';
       el.onclick = null;
-      // Change CTA text based on context
       var orig = el.dataset.origText;
-      if(orig.indexOf('Get Started') > -1) el.textContent = 'Go To Dashboard →';
-      else if(orig.indexOf('Start Basic') > -1 || orig.indexOf('Start Pro') > -1) el.textContent = orig;
-      else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
+      var plan = el.dataset.plan;
+      // Pricing card buttons get special treatment
+      if(plan){
+        var tierOrder = {free:0, basic:1, pro:2};
+        var card = el.closest('.price-card');
+        // Reset card classes
+        if(card){ card.classList.remove('current-plan'); }
+        el.className = 'price-btn auth-gate';
+        if(plan === userTier){
+          el.textContent = 'Current Plan';
+          el.classList.add('price-btn-current');
+          if(card) card.classList.add('current-plan');
+        } else if(tierOrder[plan] > tierOrder[userTier]){
+          el.textContent = 'Upgrade';
+          el.classList.add('price-btn-upgrade');
+        } else {
+          el.textContent = 'Downgrade';
+          el.classList.add('price-btn-downgrade');
+        }
+      } else {
+        if(orig.indexOf('Get Started') > -1) el.textContent = 'Go To Dashboard →';
+        else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
+      }
     });
   } else {
     authEl.innerHTML = `
@@ -986,6 +1013,15 @@ function updateAuthUI(){
       if(el.dataset.origText) el.textContent = el.dataset.origText;
       el.href = 'javascript:void(0)';
       el.onclick = handleAuthGate;
+      var plan = el.dataset.plan;
+      if(plan){
+        var card = el.closest('.price-card');
+        if(card) card.classList.remove('current-plan');
+        el.className = 'price-btn auth-gate';
+        if(plan === 'free') el.classList.add('price-btn-outline');
+        else if(plan === 'basic') el.classList.add('price-btn-fill');
+        else el.classList.add('price-btn-outline');
+      }
     });
   }
 }
