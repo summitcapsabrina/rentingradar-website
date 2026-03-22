@@ -697,7 +697,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <div style="text-align:center">
     <div class="billing-toggle" id="billingToggle">
       <div class="bt-opt" data-period="monthly" onclick="setBillingPeriod('monthly')">Monthly</div>
-      <div class="bt-opt active" data-period="yearly" onclick="setBillingPeriod('yearly')">Yearly <span class="billing-save-badge">Save up to 31%</span></div>
+      <div class="bt-opt active" data-period="yearly" onclick="setBillingPeriod('yearly')">Yearly <span class="billing-save-badge">Save up to 25%</span></div>
     </div>
   </div>
   <div class="pricing-grid" id="pricingGrid"></div>
@@ -1028,16 +1028,16 @@ document.addEventListener('click', function(e){
 var billingPeriod = 'yearly';
 
 var STRIPE_LINKS = {
-  basic_monthly: 'https://buy.stripe.com/8x2bJ3a1B4I41QxdCm77O01',
+  basic_monthly: 'https://buy.stripe.com/7sY6oJ7Tt1vS52J8i277O05',
   basic_yearly:  'https://buy.stripe.com/fZueVf0r17Ug9iZbue77O02',
-  pro_monthly:   'https://buy.stripe.com/9B6dRb0r14I4eDj55Q77O03',
+  pro_monthly:   'https://buy.stripe.com/9B63cx3DddeAdzf1TE77O06',
   pro_yearly:    'https://buy.stripe.com/14AeVfb5F4I40Mt2XI77O04'
 };
 
 var TIERS = {
   free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Perfect for getting started', features:['Up to 50 properties','Pipeline view','Contact management','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes','Property analysis','Automatic data extraction','AI-powered extraction','ROI calculator'] },
-  basic: { name:'Basic', monthly:10.99, yearly:89.99, desc:'For growing portfolios', features:['Up to 250 properties','Everything in Free','CSV import & export','Dark mode & 8 color themes','Property analysis','ROI calculator'], disabled:['Automatic data extraction via extension','AI-powered extraction'] },
-  pro:   { name:'Pro',   monthly:17.99, yearly:149.99, desc:'For serious operators', features:['Unlimited properties','Everything in Basic','Automatic data extraction via extension','AI-powered data extraction','Advanced property analysis','.xlsx import & export','Extension + AI engine setup walkthrough','Priority feature requests'], disabled:[] }
+  basic: { name:'Basic', monthly:9.99, yearly:89.99, desc:'For growing portfolios', features:['Up to 250 properties','Everything in Free','CSV import & export','Dark mode & 8 color themes','Property analysis','ROI calculator'], disabled:['Automatic data extraction via extension','AI-powered extraction'] },
+  pro:   { name:'Pro',   monthly:14.99, yearly:149.99, desc:'For serious operators', features:['Unlimited properties','Everything in Basic','Automatic data extraction via extension','AI-powered data extraction','Advanced property analysis','.xlsx import & export','Extension + AI engine setup walkthrough','Priority feature requests'], disabled:[] }
 };
 
 function setBillingPeriod(period){
