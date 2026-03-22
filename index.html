@@ -963,10 +963,16 @@ function updateAuthUI(){
         </div>
       </div>`;
 
-    // Update all auth-gate buttons to link directly to the app
+    // Update all auth-gate buttons to link directly to the app and change text
     document.querySelectorAll('.auth-gate').forEach(function(el){
+      if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
       el.href = 'https://app.rentingradar.com';
       el.onclick = null;
+      // Change CTA text based on context
+      var orig = el.dataset.origText;
+      if(orig.indexOf('Get Started') > -1) el.textContent = 'Go To Dashboard →';
+      else if(orig.indexOf('Start Basic') > -1 || orig.indexOf('Start Pro') > -1) el.textContent = orig;
+      else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
     });
   } else {
     authEl.innerHTML = `
@@ -975,8 +981,9 @@ function updateAuthUI(){
         Sign In
       </button>`;
 
-    // Reset auth-gate buttons
+    // Reset auth-gate buttons to original text and sign-in behavior
     document.querySelectorAll('.auth-gate').forEach(function(el){
+      if(el.dataset.origText) el.textContent = el.dataset.origText;
       el.href = 'javascript:void(0)';
       el.onclick = handleAuthGate;
     });
