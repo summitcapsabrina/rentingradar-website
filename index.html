@@ -26,6 +26,11 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
+<!-- Firebase & GIS -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json">
 {
@@ -112,6 +117,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .nav-links a:hover{color:#fff}
 .nav-cta{background:var(--primary);color:#fff!important;padding:9px 22px;border-radius:var(--radius);font-weight:600;transition:all .2s;font-size:.88rem}
 .nav-cta:hover{background:var(--primary-hover);box-shadow:0 4px 20px var(--primary-glow)}
+.nav-cta.disabled{opacity:.45;pointer-events:none}
+.nav-auth{display:flex;align-items:center;gap:12px}
+.nav-signin{background:none;border:1px solid var(--border);color:var(--text);padding:8px 20px;border-radius:var(--radius);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.nav-signin:hover{border-color:var(--primary);color:#fff}
+.nav-signin svg{width:16px;height:16px}
+.nav-user{display:flex;align-items:center;gap:8px;cursor:pointer;position:relative}
+.nav-user img{width:30px;height:30px;border-radius:50%;border:2px solid var(--border)}
+.nav-user-name{font-size:.82rem;font-weight:600;color:var(--text)}
+.nav-user-menu{position:absolute;top:calc(100% + 10px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,.5);min-width:180px;display:none;overflow:hidden;z-index:200}
+.nav-user-menu.open{display:block}
+.nav-user-menu a,.nav-user-menu button{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;font-size:.82rem;color:var(--text);background:none;border:none;cursor:pointer;text-decoration:none;transition:background .1s}
+.nav-user-menu a:hover,.nav-user-menu button:hover{background:var(--primary-light)}
 .mobile-menu{display:none;background:none;border:none;color:#fff;cursor:pointer;padding:4px}
 
 /* ===== HERO ===== */
@@ -335,7 +352,12 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
     <a href="#how-it-works">How It Works</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a href="https://app.rentingradar.com" class="nav-cta">Open App — Free</a>
+    <div class="nav-auth" id="navAuth">
+      <button class="nav-signin" onclick="handleSignIn()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+        Sign In
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -345,7 +367,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <h1>Your Entire Rental Arbitrage Business, In One Dashboard</h1>
   <p class="hero-sub">Stop juggling spreadsheets. RentingRadar is the purpose-built CRM that helps you find deals, analyze profitability, manage your pipeline, and scale your short-term rental portfolio.</p>
   <div class="hero-buttons">
-    <a href="https://app.rentingradar.com" class="btn btn-primary">Get Started Free →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Get Started Free →</a>
     <a href="#product" class="btn btn-secondary">See It In Action</a>
   </div>
   <p class="hero-note">No credit card required. Sign in with Google and start in seconds.</p>
@@ -670,7 +692,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
         <li>Chrome Extension</li>
         <li>Smart search</li>
       </ul>
-      <a href="https://app.rentingradar.com" class="price-btn price-btn-outline">Get Started Free</a>
+      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" onclick="handleAuthGate()">Get Started Free</a>
     </div>
     <div class="price-card popular">
       <div class="popular-badge">Most Popular</div>
@@ -689,7 +711,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
         <li>CSV export</li>
         <li>Priority support</li>
       </ul>
-      <a href="https://app.rentingradar.com" class="price-btn price-btn-fill">Start Basic Plan</a>
+      <a href="javascript:void(0)" class="price-btn price-btn-fill auth-gate" onclick="handleAuthGate()">Start Basic Plan</a>
     </div>
     <div class="price-card">
       <h3>Pro</h3>
@@ -705,7 +727,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
         <li>Early access to new features</li>
         <li>Dedicated support</li>
       </ul>
-      <a href="https://app.rentingradar.com" class="price-btn price-btn-outline">Start Pro Plan</a>
+      <a href="javascript:void(0)" class="price-btn price-btn-outline auth-gate" onclick="handleAuthGate()">Start Pro Plan</a>
     </div>
   </div>
 </section>
@@ -800,7 +822,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <h2>Ready to Scale Your Rental Arbitrage Business?</h2>
   <p>Join investors who are closing deals faster, analyzing opportunities smarter, and growing their portfolios with RentingRadar.</p>
   <div class="hero-buttons">
-    <a href="https://app.rentingradar.com" class="btn btn-primary">Get Started Free →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()">Get Started Free →</a>
     <a href="#pricing" class="btn btn-secondary">View Pricing</a>
   </div>
   <p style="color:var(--text3);font-size:.82rem;margin-top:14px;position:relative">No credit card required. Free plan includes 50 properties.</p>
@@ -821,7 +843,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#extension">Chrome Extension</a>
-      <a href="https://app.rentingradar.com">Open App</a>
+      <a href="javascript:void(0)" class="auth-gate" onclick="handleAuthGate()">Open App</a>
     </div>
     <div class="footer-col">
       <h4>Resources</h4>
@@ -840,6 +862,136 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
     <p class="footer-copy">Built for rental arbitrage investors.</p>
   </div>
 </footer>
+
+<script>
+/* ===== Firebase Auth ===== */
+const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyAiWI-bB-HxFmvgiFSIuYLtFnv7BniFlQk',
+  authDomain: 'rentingradar.firebaseapp.com',
+  projectId: 'rentingradar',
+  storageBucket: 'rentingradar.firebasestorage.app',
+  messagingSenderId: '622768449810',
+  appId: '1:622768449810:web:fde8ec3ba25a70643d2bcb'
+};
+const GIS_CLIENT_ID = '622768449810-s72d56u4fherfif72the4cffb8epk1ml.apps.googleusercontent.com';
+
+firebase.initializeApp(FIREBASE_CONFIG);
+let currentUser = null;
+
+firebase.auth().onAuthStateChanged(function(user){
+  currentUser = user;
+  updateAuthUI();
+});
+
+function handleSignIn(){
+  if(window.google && window.google.accounts && window.google.accounts.oauth2){
+    try {
+      const tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GIS_CLIENT_ID,
+        scope: 'openid email profile',
+        prompt: 'select_account',
+        callback: function(tokenResponse){
+          if(tokenResponse && tokenResponse.access_token){
+            var credential = firebase.auth.GoogleAuthProvider.credential(null, tokenResponse.access_token);
+            firebase.auth().signInWithCredential(credential).catch(function(err){
+              console.error('Firebase credential error:', err);
+              alert('Sign-in failed: ' + err.message);
+            });
+          }
+        },
+        error_callback: function(err){
+          console.error('Google sign-in error:', err);
+          if(err.type !== 'popup_closed') alert('Sign-in error: ' + (err.message || err.type || 'Unknown error'));
+        }
+      });
+      tokenClient.requestAccessToken();
+    } catch(e){
+      console.error('GIS init error:', e);
+      handleSignInLegacy();
+    }
+  } else {
+    handleSignInLegacy();
+  }
+}
+
+function handleSignInLegacy(){
+  var provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  firebase.auth().signInWithPopup(provider).catch(function(err){
+    if(err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') return;
+    if(err.code === 'auth/popup-blocked') firebase.auth().signInWithRedirect(provider);
+    else alert('Login failed: ' + err.message);
+  });
+}
+
+function handleSignOut(){
+  firebase.auth().signOut();
+}
+
+function handleAuthGate(){
+  if(currentUser){
+    window.location.href = 'https://app.rentingradar.com';
+  } else {
+    handleSignIn();
+  }
+}
+
+function updateAuthUI(){
+  const authEl = document.getElementById('navAuth');
+  if(!authEl) return;
+
+  if(currentUser){
+    const name = currentUser.displayName || 'User';
+    const photo = currentUser.photoURL;
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().substring(0,2);
+    authEl.innerHTML = `
+      <a href="https://app.rentingradar.com" class="nav-cta">Open App</a>
+      <div class="nav-user" onclick="document.getElementById('navUserMenu').classList.toggle('open')">
+        ${photo ? '<img src="'+photo+'" alt="">' : '<div style="width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;border:2px solid var(--border)">'+initials+'</div>'}
+        <div class="nav-user-menu" id="navUserMenu">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:.78rem">
+            <div style="font-weight:600;color:#fff">${name}</div>
+            <div style="color:var(--text3);font-size:.7rem;margin-top:2px">${currentUser.email||''}</div>
+          </div>
+          <a href="https://app.rentingradar.com">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Open App
+          </a>
+          <button onclick="handleSignOut()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            Sign Out
+          </button>
+        </div>
+      </div>`;
+
+    // Update all auth-gate buttons to link directly to the app
+    document.querySelectorAll('.auth-gate').forEach(function(el){
+      el.href = 'https://app.rentingradar.com';
+      el.onclick = null;
+    });
+  } else {
+    authEl.innerHTML = `
+      <button class="nav-signin" onclick="handleSignIn()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+        Sign In
+      </button>`;
+
+    // Reset auth-gate buttons
+    document.querySelectorAll('.auth-gate').forEach(function(el){
+      el.href = 'javascript:void(0)';
+      el.onclick = handleAuthGate;
+    });
+  }
+}
+
+// Close user menu on outside click
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.nav-user')){
+    const menu = document.getElementById('navUserMenu');
+    if(menu) menu.classList.remove('open');
+  }
+});
+</script>
 
 </body>
 </html>
