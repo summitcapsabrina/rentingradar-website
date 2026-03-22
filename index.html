@@ -954,30 +954,36 @@ function updateAuthUI(){
     var userTier = currentUserTier || 'free';
     document.querySelectorAll('.auth-gate').forEach(function(el){
       if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
-      el.href = 'https://app.rentingradar.com';
-      el.target = '_blank';
-      el.onclick = null;
       var orig = el.dataset.origText;
       var plan = el.dataset.plan;
       // Pricing card buttons get special treatment
       if(plan){
         var tierOrder = {free:0, basic:1, pro:2};
         var card = el.closest('.price-card');
-        // Reset card classes
         if(card){ card.classList.remove('current-plan'); }
         el.className = 'price-btn auth-gate';
+        el.setAttribute('onclick', "handlePricingClick('"+plan+"')");
         if(plan === userTier){
           el.textContent = 'Current Plan';
           el.classList.add('price-btn-current');
+          el.href = 'javascript:void(0)';
           if(card) card.classList.add('current-plan');
         } else if(tierOrder[plan] > tierOrder[userTier]){
           el.textContent = 'Upgrade';
           el.classList.add('price-btn-upgrade');
+          var lk = STRIPE_LINKS[plan+'_'+billingPeriod];
+          el.href = lk || 'javascript:void(0)';
+          el.target = '_blank';
         } else {
           el.textContent = 'Downgrade';
           el.classList.add('price-btn-downgrade');
+          el.href = 'https://app.rentingradar.com';
+          el.target = '_blank';
         }
       } else {
+        el.href = 'https://app.rentingradar.com';
+        el.target = '_blank';
+        el.onclick = null;
         if(orig.indexOf('Get Started') > -1) el.textContent = 'Go To Dashboard →';
         else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
       }
@@ -993,15 +999,18 @@ function updateAuthUI(){
     document.querySelectorAll('.auth-gate').forEach(function(el){
       if(el.dataset.origText) el.textContent = el.dataset.origText;
       el.href = 'javascript:void(0)';
-      el.onclick = handleAuthGate;
+      el.target = '';
       var plan = el.dataset.plan;
       if(plan){
+        el.setAttribute('onclick', "handlePricingClick('"+plan+"')");
         var card = el.closest('.price-card');
         if(card) card.classList.remove('current-plan');
         el.className = 'price-btn auth-gate';
         if(plan === 'free') el.classList.add('price-btn-outline');
         else if(plan === 'basic') el.classList.add('price-btn-fill');
         else el.classList.add('price-btn-outline');
+      } else {
+        el.onclick = handleAuthGate;
       }
     });
   }
@@ -1017,6 +1026,13 @@ document.addEventListener('click', function(e){
 
 // ===== BILLING TOGGLE & DYNAMIC PRICING =====
 var billingPeriod = 'yearly';
+
+var STRIPE_LINKS = {
+  basic_monthly: 'https://buy.stripe.com/8x2bJ3a1B4I41QxdCm77O01',
+  basic_yearly:  'https://buy.stripe.com/fZueVf0r17Ug9iZbue77O02',
+  pro_monthly:   'https://buy.stripe.com/9B6dRb0r14I4eDj55Q77O03',
+  pro_yearly:    'https://buy.stripe.com/14AeVfb5F4I40Mt2XI77O04'
+};
 
 var TIERS = {
   free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Perfect for getting started', features:['Up to 50 properties','Pipeline view','Contact management','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes','Property analysis','Automatic data extraction','AI-powered extraction','ROI calculator'] },
@@ -1070,12 +1086,33 @@ function renderPricingCards(){
     t.features.forEach(function(f){ html += '<li>'+f+'</li>'; });
     t.disabled.forEach(function(f){ html += '<li style="color:var(--text3);opacity:.5">'+f+'</li>'; });
     html += '</ul>';
-    html += '<a href="javascript:void(0)" class="price-btn '+btnClass+' auth-gate" data-plan="'+tier+'" data-orig-text="'+btnText+'" onclick="handleAuthGate()">'+btnText+'</a>';
+    html += '<a href="javascript:void(0)" class="price-btn '+btnClass+' auth-gate" data-plan="'+tier+'" data-orig-text="'+btnText+'" onclick="handlePricingClick(\''+tier+'\')">'+btnText+'</a>';
     html += '</div>';
   });
   grid.innerHTML = html;
   // Re-apply auth state to the new buttons
   if(currentUser) updateAuthUI();
+}
+
+function handlePricingClick(tier){
+  if(!currentUser){
+    // Not signed in — trigger sign-in flow
+    handleSignIn();
+    return;
+  }
+  if(tier === 'free'){
+    // Already on free or downgrading — go to app
+    window.open('https://app.rentingradar.com', '_blank');
+    return;
+  }
+  // Open Stripe checkout for the selected tier + billing period
+  var linkKey = tier + '_' + billingPeriod;
+  var link = STRIPE_LINKS[linkKey];
+  if(link){
+    window.open(link, '_blank');
+  } else {
+    window.open('https://app.rentingradar.com', '_blank');
+  }
 }
 
 // Initial render
