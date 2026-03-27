@@ -354,6 +354,15 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   .steps{grid-template-columns:1fr}
   .stats-inner{flex-direction:column;gap:20px}
 }
+/* Lightbox */
+.showcase-visual img,.preview-body img{cursor:zoom-in;transition:opacity .15s}
+.showcase-visual img:hover,.preview-body img:hover{opacity:.9}
+.sc-lightbox{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);cursor:zoom-out;opacity:0;transition:opacity .2s;pointer-events:none}
+.sc-lightbox.open{opacity:1;pointer-events:auto}
+.sc-lightbox img{max-width:92vw;max-height:92vh;border-radius:10px;box-shadow:0 12px 48px rgba(0,0,0,.6);object-fit:contain;transform:scale(.95);transition:transform .25s ease}
+.sc-lightbox.open img{transform:scale(1)}
+.sc-lightbox-close{position:absolute;top:16px;right:20px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.1);color:#fff;font-size:20px;cursor:pointer;border:none;transition:background .15s}
+.sc-lightbox-close:hover{background:rgba(255,255,255,.2)}
 </style>
 </head>
 <body>
@@ -1103,6 +1112,29 @@ function handlePricingClick(tier){
 
 // Initial render
 renderPricingCards();
+
+// ── Screenshot Lightbox ──
+(function(){
+  // Create lightbox element
+  var lb = document.createElement('div');
+  lb.className = 'sc-lightbox';
+  lb.innerHTML = '<button class="sc-lightbox-close" aria-label="Close">✕</button><img src="" alt="">';
+  document.body.appendChild(lb);
+  var lbImg = lb.querySelector('img');
+  var close = function(){ lb.classList.remove('open'); };
+  lb.addEventListener('click', close);
+  lb.querySelector('.sc-lightbox-close').addEventListener('click', close);
+  lbImg.addEventListener('click', function(e){ e.stopPropagation(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  // Attach click handlers to all showcase images
+  document.querySelectorAll('.showcase-visual img, .preview-body img').forEach(function(img){
+    img.addEventListener('click', function(){
+      lbImg.src = this.src;
+      lbImg.alt = this.alt;
+      lb.classList.add('open');
+    });
+  });
+})();
 </script>
 
 </body>
