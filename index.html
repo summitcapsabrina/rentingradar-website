@@ -848,6 +848,16 @@ firebase.initializeApp(FIREBASE_CONFIG);
 var db = firebase.firestore();
 let currentUser = null;
 let currentUserTier = 'free';
+let _rrCookieUser = null; // User info from cross-domain cookie (set by the app)
+
+// Read cross-domain cookie set by app.rentingradar.com
+function getRRCookieUser(){
+  try {
+    var match = document.cookie.match(/(?:^|;\s*)rr_user=([^;]+)/);
+    if(match) return JSON.parse(decodeURIComponent(match[1]));
+  } catch(e){}
+  return null;
+}
 
 firebase.auth().onAuthStateChanged(async function(user){
   currentUser = user;
@@ -857,6 +867,8 @@ firebase.auth().onAuthStateChanged(async function(user){
     return;
   } else {
     currentUserTier = 'free';
+    // Check if user is signed in on the app via cross-domain cookie
+    _rrCookieUser = getRRCookieUser();
   }
   updateAuthUI();
 });
@@ -978,6 +990,50 @@ function updateAuthUI(){
         el.onclick = null;
         if(orig.indexOf('Get Started') > -1) el.textContent = 'Go To Dashboard →';
         else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
+      }
+    });
+  } else if(_rrCookieUser){
+    // Not signed in on the website, but signed in on the app (cross-domain cookie)
+    const name = _rrCookieUser.name || 'User';
+    const photo = _rrCookieUser.photo || '';
+    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().substring(0,2);
+    authEl.innerHTML = `
+      <div class="nav-user" onclick="document.getElementById('navUserMenu').classList.toggle('open')" style="cursor:pointer;display:flex;align-items:center;gap:8px">
+        ${photo ? '<img src="'+photo+'" alt="" style="width:30px;height:30px;border-radius:50%;border:2px solid var(--border)">' : '<div style="width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;border:2px solid var(--border)">'+initials+'</div>'}
+        <div class="nav-user-menu" id="navUserMenu">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:.78rem">
+            <div style="font-weight:600;color:#fff">${name}</div>
+          </div>
+          <a href="https://app.rentingradar.com">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            Go To App
+          </a>
+        </div>
+      </div>`;
+
+    // Update hero buttons for logged-in user
+    var heroGetStarted = document.getElementById('heroGetStarted');
+    if(heroGetStarted){
+      heroGetStarted.textContent = 'Go To App →';
+      heroGetStarted.href = 'https://app.rentingradar.com';
+      heroGetStarted.onclick = null;
+    }
+    // Update tutorial buttons
+    document.querySelectorAll('[onclick*="handleTutorialGate"]').forEach(function(el){
+      el.textContent = '🎓 Resume the Interactive Tutorial';
+      el.href = 'https://app.rentingradar.com?tutorial=1';
+      el.onclick = null;
+    });
+    // Update other auth-gate buttons
+    document.querySelectorAll('.auth-gate').forEach(function(el){
+      if(el.id === 'heroGetStarted') return; // Already handled
+      if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
+      var plan = el.dataset.plan;
+      if(!plan){
+        el.href = 'https://app.rentingradar.com';
+        el.onclick = null;
+        var orig = el.dataset.origText;
+        if(orig && orig.indexOf('Get Started') > -1) el.textContent = 'Go To App →';
       }
     });
   } else {
