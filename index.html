@@ -381,7 +381,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
     <div class="nav-auth" id="navAuth">
-      <button class="nav-signin" onclick="handleSignIn()">
+      <button class="nav-signin" onclick="handleAuthGate()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
         Sign In
       </button>
@@ -849,31 +849,12 @@ var db = firebase.firestore();
 let currentUser = null;
 let currentUserTier = 'free';
 
-var _wasSignedIn = false;
 firebase.auth().onAuthStateChanged(async function(user){
-  var wasOut = !_wasSignedIn;
   currentUser = user;
-  _wasSignedIn = !!user;
   if(user){
-    // Read tier from Firestore
-    try {
-      var userDoc = await db.collection('users').doc(user.uid).get();
-      if(userDoc.exists && userDoc.data().tier){
-        currentUserTier = userDoc.data().tier;
-      } else {
-        currentUserTier = 'free';
-      }
-    } catch(e){ currentUserTier = 'free'; }
-    // Auto-navigate after fresh sign-in
-    if(wasOut && _postAuthDestination){
-      var dest = _postAuthDestination;
-      _postAuthDestination = null;
-      if(dest === 'tutorial'){
-        window.open('https://app.rentingradar.com?tutorial=1', '_blank');
-      } else {
-        window.open('https://app.rentingradar.com', '_blank');
-      }
-    }
+    // Signed-in user on the website — redirect to the app
+    window.location.href = 'https://app.rentingradar.com';
+    return;
   } else {
     currentUserTier = 'free';
   }
@@ -926,24 +907,12 @@ function handleSignOut(){
 }
 
 function handleAuthGate(){
-  if(currentUser){
-    window.open('https://app.rentingradar.com', '_blank');
-  } else {
-    _postAuthDestination = 'app';
-    handleSignIn();
-  }
+  window.location.href = 'https://app.rentingradar.com';
 }
 
 function handleTutorialGate(){
-  if(currentUser){
-    window.open('https://app.rentingradar.com?tutorial=1', '_blank');
-  } else {
-    _postAuthDestination = 'tutorial';
-    handleSignIn();
-  }
+  window.location.href = 'https://app.rentingradar.com?tutorial=1';
 }
-
-var _postAuthDestination = 'app';
 
 function updateAuthUI(){
   const authEl = document.getElementById('navAuth');
@@ -1013,7 +982,7 @@ function updateAuthUI(){
     });
   } else {
     authEl.innerHTML = `
-      <button class="nav-signin" onclick="handleSignIn()">
+      <button class="nav-signin" onclick="handleAuthGate()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
         Sign In
       </button>`;
@@ -1119,8 +1088,8 @@ function renderPricingCards(){
 
 function handlePricingClick(tier){
   if(!currentUser){
-    // Not signed in — trigger sign-in flow
-    handleSignIn();
+    // Not signed in — redirect to app to sign in
+    handleAuthGate();
     return;
   }
   if(tier === 'free'){
