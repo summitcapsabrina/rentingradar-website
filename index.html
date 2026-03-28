@@ -357,6 +357,8 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
 /* Lightbox */
 .showcase-visual img,.preview-body img{cursor:zoom-in;transition:opacity .15s}
 .showcase-visual img:hover,.preview-body img:hover{opacity:.9}
+.hero-preview .preview-body img{cursor:default}
+.hero-preview .preview-body img:hover{opacity:1}
 .sc-lightbox{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);cursor:zoom-out;opacity:0;transition:opacity .2s;pointer-events:none}
 .sc-lightbox.open{opacity:1;pointer-events:auto}
 .sc-lightbox img{max-width:92vw;max-height:92vh;border-radius:10px;box-shadow:0 12px 48px rgba(0,0,0,.6);object-fit:contain;transform:scale(.95);transition:transform .25s ease}
@@ -1129,6 +1131,7 @@ renderPricingCards();
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
   // Attach click handlers to all showcase images
   document.querySelectorAll('.showcase-visual img, .preview-body img').forEach(function(img){
+    if(img.closest('.hero-preview')) return; // skip hero image — same screenshot is zoomable below
     img.addEventListener('click', function(){
       lbImg.src = this.src;
       lbImg.alt = this.alt;
