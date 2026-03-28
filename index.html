@@ -396,7 +396,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <p class="hero-sub">Stop juggling spreadsheets. RentingRadar is the purpose-built CRM that helps you find deals, analyze profitability, manage your pipeline, and scale your short-term rental portfolio.</p>
   <div class="hero-buttons">
     <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Get Started Free →</a>
-    <a href="https://app.rentingradar.com?tutorial=1" target="_blank" class="btn btn-secondary">🎓 Try the Interactive Tutorial</a>
+    <a href="javascript:void(0)" class="btn btn-secondary" onclick="handleTutorialGate()">🎓 Try the Interactive Tutorial</a>
   </div>
   <p class="hero-note">No credit card required. Sign in with Google and start in seconds.</p>
 
@@ -588,8 +588,8 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
 <!-- TUTORIAL CTA -->
 <section style="text-align:center;padding:56px 24px 48px">
   <h2 style="font-size:1.6rem;font-weight:800;color:var(--text);margin-bottom:10px">Want to see every feature in action?</h2>
-  <p style="font-size:1rem;color:var(--text2);margin-bottom:24px">Explore the full CRM with our guided walkthrough — no sign-up required.</p>
-  <a href="https://app.rentingradar.com?tutorial=1" target="_blank" class="btn btn-secondary" style="font-size:.9rem;padding:12px 32px">🎓 Try the Interactive Tutorial</a>
+  <p style="font-size:1rem;color:var(--text2);margin-bottom:24px">Explore the full CRM with our guided walkthrough — sign in and start in seconds.</p>
+  <a href="javascript:void(0)" class="btn btn-secondary" style="font-size:.9rem;padding:12px 32px" onclick="handleTutorialGate()">🎓 Try the Interactive Tutorial</a>
 </section>
 
 <!-- DEAL TEMPERATURE -->
@@ -849,8 +849,11 @@ var db = firebase.firestore();
 let currentUser = null;
 let currentUserTier = 'free';
 
+var _wasSignedIn = false;
 firebase.auth().onAuthStateChanged(async function(user){
+  var wasOut = !_wasSignedIn;
   currentUser = user;
+  _wasSignedIn = !!user;
   if(user){
     // Read tier from Firestore
     try {
@@ -861,6 +864,16 @@ firebase.auth().onAuthStateChanged(async function(user){
         currentUserTier = 'free';
       }
     } catch(e){ currentUserTier = 'free'; }
+    // Auto-navigate after fresh sign-in
+    if(wasOut && _postAuthDestination){
+      var dest = _postAuthDestination;
+      _postAuthDestination = null;
+      if(dest === 'tutorial'){
+        window.open('https://app.rentingradar.com?tutorial=1', '_blank');
+      } else {
+        window.open('https://app.rentingradar.com', '_blank');
+      }
+    }
   } else {
     currentUserTier = 'free';
   }
@@ -916,9 +929,21 @@ function handleAuthGate(){
   if(currentUser){
     window.open('https://app.rentingradar.com', '_blank');
   } else {
+    _postAuthDestination = 'app';
     handleSignIn();
   }
 }
+
+function handleTutorialGate(){
+  if(currentUser){
+    window.open('https://app.rentingradar.com?tutorial=1', '_blank');
+  } else {
+    _postAuthDestination = 'tutorial';
+    handleSignIn();
+  }
+}
+
+var _postAuthDestination = 'app';
 
 function updateAuthUI(){
   const authEl = document.getElementById('navAuth');
