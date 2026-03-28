@@ -162,7 +162,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .preview-placeholder p{margin-top:8px;font-size:.8rem;color:var(--text3);opacity:.6}
 
 /* Floating badges around the hero preview */
-.hero-float{position:absolute;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 16px;font-size:.78rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.4);z-index:10;animation:float 6s ease-in-out infinite}
+.hero-float{position:absolute;border:none;border-radius:var(--radius);padding:10px 16px;font-size:.78rem;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(0,0,0,.35);z-index:10;animation:float 6s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .hero-float.f1{top:15%;left:-30px;animation-delay:0s}
 .hero-float.f2{top:35%;right:-30px;animation-delay:1.5s}
@@ -400,17 +400,17 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
 
   <!-- App Preview Window -->
   <div class="hero-preview">
-    <div class="hero-float f1">
-      <div class="hf-icon" style="background:rgba(52,211,153,.15);color:#34d399">💰</div>
-      <div><div style="font-weight:700;font-size:.82rem;color:#34d399">Deal Temperature</div><div style="color:var(--text3);font-size:.72rem">Instant go/no-go on every deal</div></div>
+    <div class="hero-float f1" style="background:#34d399">
+      <div class="hf-icon" style="background:rgba(255,255,255,.25);color:#fff">💰</div>
+      <div><div style="font-weight:700;font-size:.82rem;color:#fff">Deal Temperature</div><div style="color:rgba(255,255,255,.8);font-size:.72rem">Instant go/no-go on every deal</div></div>
     </div>
-    <div class="hero-float f2">
-      <div class="hf-icon" style="background:rgba(99,129,250,.15);color:#6381fa">📊</div>
-      <div><div style="font-weight:700;font-size:.82rem;color:#6381fa">Competitor Analysis</div><div style="color:var(--text3);font-size:.72rem">See where you rank in the market</div></div>
+    <div class="hero-float f2" style="background:#6381fa">
+      <div class="hf-icon" style="background:rgba(255,255,255,.25);color:#fff">📊</div>
+      <div><div style="font-weight:700;font-size:.82rem;color:#fff">Competitor Analysis</div><div style="color:rgba(255,255,255,.8);font-size:.72rem">See where you rank in the market</div></div>
     </div>
-    <div class="hero-float f3">
-      <div class="hf-icon" style="background:rgba(245,158,11,.15);color:#f59e0b">🔥</div>
-      <div><div style="font-weight:700;font-size:.82rem;color:#f59e0b">Negotiation Forecasting</div><div style="color:var(--text3);font-size:.72rem">Model rent adjustments & concessions</div></div>
+    <div class="hero-float f3" style="background:#f59e0b">
+      <div class="hf-icon" style="background:rgba(255,255,255,.25);color:#fff">🔥</div>
+      <div><div style="font-weight:700;font-size:.82rem;color:#fff">Negotiation Forecasting</div><div style="color:rgba(255,255,255,.8);font-size:.72rem">Model rent adjustments & concessions</div></div>
     </div>
     <div class="hero-preview-window">
       <div class="preview-titlebar">
