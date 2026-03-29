@@ -162,8 +162,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .preview-placeholder p{margin-top:8px;font-size:.8rem;color:var(--text3);opacity:.6}
 
 /* Hero highlight cards below preview */
-.hero-highlights{display:flex;justify-content:center;gap:16px;max-width:1020px;margin:28px auto 0;flex-wrap:wrap}
-.hero-highlight{display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:12px;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;flex:1;max-width:320px;min-width:200px}
+.hero-highlights{display:flex;flex-direction:column;gap:12px;max-width:1020px;margin:48px auto 0}
+.hero-highlight{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:12px;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;width:fit-content}
+.hero-highlight:nth-child(1){align-self:flex-start}
+.hero-highlight:nth-child(2){align-self:flex-end}
+.hero-highlight:nth-child(3){align-self:flex-start}
 .hero-highlight:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.4)}
 .hh-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
 .hh-title{font-weight:700;font-size:.85rem}
@@ -329,8 +332,8 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   .footer-bottom{flex-direction:column;text-align:center}
   .showcase-item{gap:24px}
   .hero-preview{margin:0 12px}
-  .hero-highlights{gap:10px;margin-top:20px}
-  .hero-highlight{padding:10px 14px;min-width:0;max-width:none}
+  .hero-highlights{gap:10px;margin:36px 12px 0}
+  .hero-highlight{padding:10px 14px}
   .hh-title{font-size:.8rem}
   .hh-desc{font-size:.7rem}
 }
@@ -339,8 +342,8 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   .hero-buttons{flex-direction:column;align-items:center}
   .steps{grid-template-columns:1fr}
   .features-grid{grid-template-columns:1fr}
-  .hero-highlights{flex-direction:column;align-items:stretch;gap:8px;margin-top:16px}
-  .hero-highlight{max-width:none;padding:10px 14px}
+  .hero-highlights{gap:8px;margin:28px 8px 0}
+  .hero-highlight{padding:10px 14px}
   .hh-icon{width:30px;height:30px;font-size:.95rem}
   .hh-title{font-size:.78rem}
   .hh-desc{font-size:.68rem}
