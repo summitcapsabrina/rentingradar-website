@@ -139,6 +139,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .mobile-drawer .mobile-divider{height:1px;background:var(--border);margin:8px 0}
 .mobile-drawer .mobile-signin{border:1px solid var(--primary);color:var(--primary);font-weight:600;justify-content:center;margin-top:4px;border-radius:var(--radius);padding:12px 16px}
 .mobile-drawer .mobile-signin:hover{background:var(--primary);color:#fff}
+.mobile-drawer-user{display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:4px}
+.mobile-drawer-user img{width:36px;height:36px;border-radius:50%;border:2px solid var(--border)}
+.mobile-drawer-user .mdu-initials{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:2px solid var(--border);flex-shrink:0}
+.mobile-drawer-user .mdu-info{display:flex;flex-direction:column}
+.mobile-drawer-user .mdu-name{font-size:.88rem;font-weight:600;color:var(--text)}
+.mobile-drawer-user .mdu-email{font-size:.72rem;color:var(--text3);margin-top:1px}
 
 /* ===== HERO ===== */
 .hero{padding:160px 32px 100px;text-align:center;position:relative;overflow:hidden}
@@ -384,12 +390,15 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   </button>
 </nav>
 <div class="mobile-drawer" id="mobileDrawer">
+  <div id="mobileDrawerAuth"></div>
   <a href="#features" onclick="closeMobileMenu()">Features</a>
   <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
   <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
   <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
   <div class="mobile-divider"></div>
-  <button class="mobile-signin" onclick="closeMobileMenu();handleAuthGate()">Sign In</button>
+  <div id="mobileDrawerActions">
+    <button class="mobile-signin" onclick="closeMobileMenu();handleAuthGate()">Sign In</button>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -898,6 +907,12 @@ function updateAuthUI(){
         </div>
       </div>`;
 
+    // Update mobile drawer for signed-in user
+    var mda = document.getElementById('mobileDrawerAuth');
+    if(mda) mda.innerHTML = '<div class="mobile-drawer-user">'+(photo ? '<img src="'+photo+'" alt="">' : '<div class="mdu-initials">'+initials+'</div>')+'<div class="mdu-info"><div class="mdu-name">'+name+'</div><div class="mdu-email">'+(currentUser.email||'')+'</div></div></div><div class="mobile-divider"></div>';
+    var mdAct = document.getElementById('mobileDrawerActions');
+    if(mdAct) mdAct.innerHTML = '<a href="https://app.rentingradar.com" onclick="closeMobileMenu()" style="justify-content:center;font-weight:600;color:var(--primary)">Open App</a><button onclick="closeMobileMenu();handleSignOut()" style="justify-content:center;color:var(--text3)">Sign Out</button>';
+
     // Update all auth-gate buttons to link directly to the app and change text
     var userTier = currentUserTier || 'free';
     document.querySelectorAll('.auth-gate').forEach(function(el){
@@ -952,6 +967,12 @@ function updateAuthUI(){
         </div>
       </div>`;
 
+    // Update mobile drawer for cookie user
+    var mda2 = document.getElementById('mobileDrawerAuth');
+    if(mda2) mda2.innerHTML = '<div class="mobile-drawer-user">'+(photo ? '<img src="'+photo+'" alt="">' : '<div class="mdu-initials">'+initials+'</div>')+'<div class="mdu-info"><div class="mdu-name">'+name+'</div></div></div><div class="mobile-divider"></div>';
+    var mdAct2 = document.getElementById('mobileDrawerActions');
+    if(mdAct2) mdAct2.innerHTML = '<a href="https://app.rentingradar.com" onclick="closeMobileMenu()" style="justify-content:center;font-weight:600;color:var(--primary)">Go To App</a>';
+
     // Update hero buttons for logged-in user
     var heroGetStarted = document.getElementById('heroGetStarted');
     if(heroGetStarted){
@@ -983,6 +1004,12 @@ function updateAuthUI(){
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
         Sign In
       </button>`;
+
+    // Reset mobile drawer to signed-out state
+    var mda3 = document.getElementById('mobileDrawerAuth');
+    if(mda3) mda3.innerHTML = '';
+    var mdAct3 = document.getElementById('mobileDrawerActions');
+    if(mdAct3) mdAct3.innerHTML = '<button class="mobile-signin" onclick="closeMobileMenu();handleAuthGate()">Sign In</button>';
 
     // Reset auth-gate buttons to original text and sign-in behavior
     document.querySelectorAll('.auth-gate').forEach(function(el){
