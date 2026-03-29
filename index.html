@@ -51,7 +51,7 @@
     "Sales Pipeline & CRM",
     "Deal Calculator & Financial Analysis",
     "Competitor Analysis with Airbnb Competitors",
-    "Chrome Extension for One-Click Import (Coming Soon)",
+    "CSV & Excel Import/Export",
     "Revenue Projections (Best/Likely/Worst)",
     "Activity Logging with Rich Text & Screenshots",
     "Follow-Up & Meeting Management",
@@ -72,7 +72,7 @@
     {
       "@type": "Question",
       "name": "Do I need to install anything to use RentingRadar?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No. RentingRadar runs entirely in your browser at app.rentingradar.com. Just sign in with Google and you're ready to go. A Chrome Extension for one-click listing imports is coming soon for Pro plan users." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No. RentingRadar runs entirely in your browser at app.rentingradar.com. Just sign in with Google and you're ready to go — no downloads or installations required." }
     },
     {
       "@type": "Question",
@@ -87,7 +87,7 @@
     {
       "@type": "Question",
       "name": "Can I import listings from Zillow, Apartments.com, or other sites?",
-      "acceptedAnswer": { "@type": "Answer", "text": "The Chrome Extension is coming soon! It will support 15+ listing sites including Zillow, Apartments.com, Redfin, Realtor.com, and more with a single click. It will be included with the Pro plan." }
+      "acceptedAnswer": { "@type": "Answer", "text": "You can add properties manually with full detail entry, or import your existing data via CSV or Excel files. Basic and Pro plans include CSV import/export, and Pro adds .xlsx support." }
     }
   ]
 }
@@ -279,20 +279,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .billing-save-badge{font-size:.7rem;font-weight:700;color:#fff;background:#10b981;padding:3px 10px;border-radius:10px;margin-left:6px}
 .price-old{text-decoration:line-through;color:var(--text3);font-size:1.3rem;font-weight:600;margin-right:4px}
 
-/* ===== CHROME EXTENSION ===== */
-.extension{padding:100px 32px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.ext-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-.ext-text h2{font-size:2rem;font-weight:800;margin-bottom:14px;letter-spacing:-.3px}
-.ext-text p{color:var(--text2);font-size:.95rem;line-height:1.7;margin-bottom:24px}
-.ext-sites{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
-.ext-site{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:.78rem;color:var(--text2);font-weight:500}
-.ext-visual{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:32px;text-align:center}
-.ext-visual .ext-icon{font-size:3rem;margin-bottom:16px}
-.ext-visual .ext-label{color:var(--text2);font-size:.88rem;margin-bottom:20px}
-.ext-badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.ext-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:.8rem;color:var(--text2)}
-.ext-badge strong{color:var(--text)}
-
 /* ===== FAQ ===== */
 .faq{padding:110px 32px}
 .faq-list{max-width:720px;margin:56px auto 0}
@@ -478,8 +464,8 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
     </div>
     <div class="feature-card">
       <div class="feature-icon" style="background:rgba(168,85,247,.12);color:#a855f7">📥</div>
-      <h3>Chrome Extension <span style="font-size:.6rem;background:rgba(168,85,247,.15);color:#a855f7;padding:2px 8px;border-radius:4px;vertical-align:middle;font-weight:600;letter-spacing:.3px;text-transform:uppercase">Coming Soon</span></h3>
-      <p>Import listings from Zillow, Apartments.com, Redfin, and 15+ sites directly into your CRM. One click, all the data.</p>
+      <h3>CSV & Excel Import</h3>
+      <p>Import your existing property data from spreadsheets. Export anytime to CSV or Excel for reporting and backup.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon" style="background:rgba(34,211,238,.12);color:#22d3ee">📝</div>
@@ -555,7 +541,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
       <h3>Research the Market Without Leaving Your CRM</h3>
       <p>Add up to 30 Airbnb competitors per property. Track nightly rates, occupancy, revenue, ratings, and amenities to build a complete competitive picture.</p>
       <ul class="showcase-list">
-        <li><span class="sc-check">✓</span> Import competitors directly from AirDNA via the Chrome Extension <span style="font-size:.6rem;background:rgba(245,158,11,.12);color:#f59e0b;padding:1px 6px;border-radius:3px;font-weight:600;letter-spacing:.3px;text-transform:uppercase">Coming Soon</span></li>
+        <li><span class="sc-check">✓</span> Add up to 30 competitors per property with detailed metrics</li>
         <li><span class="sc-check">✓</span> Automatic revenue projections from your competitor data</li>
         <li><span class="sc-check">✓</span> Required revenue vs. projected revenue comparison</li>
         <li><span class="sc-check">✓</span> "Not Enough Data" safeguards until you have 3+ competitors</li>
@@ -638,7 +624,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
       <div class="step">
         <div class="step-num">2</div>
         <h3>Add Properties</h3>
-        <p>Add properties manually or import them with the Chrome Extension (coming soon). Property details, contacts, and notes are all captured.</p>
+        <p>Add properties manually with our streamlined entry form, or import from CSV/Excel. Property details, contacts, and notes are all captured.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
@@ -701,40 +687,6 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <div class="pricing-grid" id="pricingGrid"></div>
 </section>
 
-<!-- CHROME EXTENSION -->
-<section class="extension" id="extension">
-  <div class="ext-inner">
-    <div class="ext-text">
-      <div class="section-label" style="text-align:left">Chrome Extension <span style="font-size:.65rem;background:rgba(99,129,250,.15);color:var(--primary);padding:2px 8px;border-radius:4px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;vertical-align:middle">Coming Soon</span></div>
-      <h2>Import Listings in One Click</h2>
-      <p>Browse rental listings as you normally would. When you find one worth tracking, click the RentingRadar button and every detail is imported into your CRM automatically. No copy-pasting, no manual data entry.</p>
-      <div class="ext-sites">
-        <span class="ext-site">Zillow</span>
-        <span class="ext-site">Apartments.com</span>
-        <span class="ext-site">Redfin</span>
-        <span class="ext-site">Realtor.com</span>
-        <span class="ext-site">Trulia</span>
-        <span class="ext-site">HotPads</span>
-        <span class="ext-site">Rent.com</span>
-        <span class="ext-site">Craigslist</span>
-        <span class="ext-site">Facebook</span>
-        <span class="ext-site">AirDNA</span>
-        <span class="ext-site">+ more</span>
-      </div>
-      <a href="#" class="btn btn-primary" style="opacity:.7;pointer-events:none">Coming Soon — Pro Plan</a>
-    </div>
-    <div class="ext-visual">
-      <div class="ext-icon">🧩</div>
-      <div class="ext-label">RentingRadar Importer for Chrome</div>
-      <div class="ext-badges">
-        <div class="ext-badge"><strong>15+</strong> sites</div>
-        <div class="ext-badge"><strong>One-click</strong> import</div>
-        <div class="ext-badge"><strong>Pro</strong> plan</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section class="faq" id="faq">
   <div class="section-label">FAQ</div>
@@ -753,7 +705,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
         Do I need to install anything?
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a"><p>No. RentingRadar runs entirely in your browser at app.rentingradar.com. Just sign in with Google and you're ready to go. A Chrome Extension for one-click listing imports is coming soon for Pro plan users.</p></div>
+      <div class="faq-a"><p>No. RentingRadar runs entirely in your browser at app.rentingradar.com. Just sign in with Google and you're ready to go — no downloads or installations required.</p></div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
@@ -774,7 +726,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
         Can I import listings from rental sites?
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a"><p>The Chrome Extension is coming soon! It will support 15+ listing sites including Zillow, Apartments.com, Redfin, Realtor.com, Trulia, HotPads, Craigslist, and more, plus comparable listing data from AirDNA for competitor analysis. It will be included with the Pro plan.</p></div>
+      <div class="faq-a"><p>You can add properties manually with our streamlined entry form, or import your existing property data via CSV or Excel files. Basic and Pro plans include data import/export capabilities.</p></div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
@@ -811,7 +763,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
       <h4>Product</h4>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
-      <a href="#extension">Chrome Extension</a>
+      <a href="#faq">FAQ</a>
       <a href="javascript:void(0)" class="auth-gate" onclick="handleAuthGate()">Open App</a>
     </div>
     <div class="footer-col">
@@ -975,14 +927,11 @@ function updateAuthUI(){
         } else if(tierOrder[plan] > tierOrder[userTier]){
           el.textContent = 'Upgrade';
           el.classList.add('price-btn-upgrade');
-          var lk = STRIPE_LINKS[plan+'_'+billingPeriod];
-          el.href = lk || 'javascript:void(0)';
-          el.target = '_blank';
+          el.href = 'https://app.rentingradar.com#pricing';
         } else {
           el.textContent = 'Downgrade';
           el.classList.add('price-btn-downgrade');
-          el.href = 'https://app.rentingradar.com';
-          el.target = '_blank';
+          el.href = 'https://app.rentingradar.com#pricing';
         }
       } else {
         el.href = 'https://app.rentingradar.com';
@@ -1075,17 +1024,10 @@ document.addEventListener('click', function(e){
 // ===== BILLING TOGGLE & DYNAMIC PRICING =====
 var billingPeriod = 'yearly';
 
-var STRIPE_LINKS = {
-  basic_monthly: 'https://buy.stripe.com/7sY6oJ7Tt1vS52J8i277O05',
-  basic_yearly:  'https://buy.stripe.com/fZueVf0r17Ug9iZbue77O02',
-  pro_monthly:   'https://buy.stripe.com/9B63cx3DddeAdzf1TE77O06',
-  pro_yearly:    'https://buy.stripe.com/14AeVfb5F4I40Mt2XI77O04'
-};
-
 var TIERS = {
-  free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Perfect for getting started', features:['Up to 15 properties','Pipeline view','Contact management','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes','Property analysis','Automatic data extraction','AI-powered extraction','ROI calculator'] },
-  basic: { name:'Basic', monthly:9.99, yearly:89.99, desc:'For growing portfolios', features:['Up to 50 properties','Everything in Free','CSV import & export','Dark mode & 8 color themes','Property analysis','ROI calculator'], disabled:['Automatic data extraction via extension','AI-powered extraction'] },
-  pro:   { name:'Pro',   monthly:14.99, yearly:149.99, desc:'For serious operators', features:['Unlimited properties','Everything in Basic','Negotiation Forecasting Tools','Automatic data extraction via extension','AI-powered expense estimates','Advanced property analysis','.xlsx import & export','Extension + AI engine setup walkthrough','Priority feature requests'], disabled:[] }
+  free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Perfect for getting started', features:['Up to 15 properties','Pipeline view','Contact management','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes','Property analysis','ROI calculator'] },
+  basic: { name:'Basic', monthly:9.99, yearly:89.99, desc:'For growing portfolios', features:['Up to 50 properties','Everything in Free','CSV import & export','Dark mode & 8 color themes','Property analysis','ROI calculator'], disabled:[] },
+  pro:   { name:'Pro',   monthly:14.99, yearly:149.99, desc:'For serious operators', features:['Unlimited properties','Everything in Basic','Negotiation Forecasting Tools','Advanced property analysis','.xlsx import & export','Priority feature requests'], disabled:[] }
 };
 
 function setBillingPeriod(period){
@@ -1143,23 +1085,11 @@ function renderPricingCards(){
 }
 
 function handlePricingClick(tier){
-  if(!currentUser){
-    // Not signed in — redirect to app to sign in
-    handleAuthGate();
-    return;
-  }
+  // All checkout flows go through the app (which uses secure Cloud Functions)
   if(tier === 'free'){
-    // Already on free or downgrading — go to app
-    window.open('https://app.rentingradar.com', '_blank');
-    return;
-  }
-  // Open Stripe checkout for the selected tier + billing period
-  var linkKey = tier + '_' + billingPeriod;
-  var link = STRIPE_LINKS[linkKey];
-  if(link){
-    window.open(link, '_blank');
+    window.location.href = 'https://app.rentingradar.com';
   } else {
-    window.open('https://app.rentingradar.com', '_blank');
+    window.location.href = 'https://app.rentingradar.com#pricing';
   }
 }
 
