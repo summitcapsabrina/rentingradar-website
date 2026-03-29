@@ -329,7 +329,8 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   .hero{padding:130px 20px 70px}
   .hero h1{font-size:2.4rem}
   .hero .hero-sub{font-size:1.05rem}
-  .features-grid,.pricing-grid,.testimonial-grid,.dt-cards{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .pricing-grid,.testimonial-grid,.dt-cards{grid-template-columns:1fr}
   .steps{grid-template-columns:repeat(2,1fr)}
   .steps::before{display:none}
   .ext-inner{grid-template-columns:1fr}
@@ -350,6 +351,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   .hero-buttons{flex-direction:column;align-items:center}
   .steps{grid-template-columns:1fr}
   .stats-inner{flex-direction:column;gap:20px}
+  .features-grid{grid-template-columns:1fr}
   .hero-float{padding:5px 9px;font-size:.65rem;border-radius:8px}
   .hero-float .hf-icon{width:22px;height:22px;font-size:.78rem;border-radius:6px}
   .hero-float div div:last-child{display:none}
@@ -451,63 +453,33 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <div class="features-grid">
     <div class="feature-card">
       <div class="feature-icon" style="background:rgba(99,129,250,.12);color:var(--primary)">📊</div>
-      <h3>Sales Dashboard</h3>
-      <p>KPIs, visual pipeline, upcoming tasks, meetings, recent activity, and smart insights — everything you need on one screen.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(129,140,248,.12);color:#818cf8">🔄</div>
-      <h3>Visual Pipeline</h3>
-      <p>Track every property from new lead to closed deal across color-coded stages. Click into any status to see exactly which properties need attention.</p>
+      <h3>Dashboard & Pipeline</h3>
+      <p>KPIs, smart insights, and a color-coded visual pipeline on one screen. Track every property from new lead to closed deal and see exactly which ones need attention.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon" style="background:rgba(52,211,153,.12);color:var(--success)">💰</div>
       <h3>Deal Calculator & Temperature</h3>
-      <p>NOI, cash flow, cash-on-cash return, and payback period — plus a Deal Temperature score (Slam-Dunk to No-Go) so you instantly know if a deal is worth pursuing.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(56,189,248,.12);color:#38bdf8">🏠</div>
-      <h3>Property Profiles</h3>
-      <p>Rich detail pages for every property with bedrooms, amenities, lease terms, financials, activity logs, and contact info in one place.</p>
+      <p>NOI, cash flow, cash-on-cash return, payback period, and expense tracking — plus a Deal Temperature score (Slam-Dunk to No-Go) so you instantly know if a deal is worth pursuing.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon" style="background:rgba(251,191,36,.12);color:var(--warning)">📈</div>
-      <h3>Competitor Analysis</h3>
-      <p>Track up to 30 Airbnb competitors per property. See occupancy rates, nightly rates, and revenue projections across best, likely, and worst-case scenarios.</p>
+      <h3>Competitor Analysis & Forecasting</h3>
+      <p>Track up to 30 Airbnb competitors per property with occupancy rates, nightly rates, and revenue projections. Model rent adjustments and concession packages to see how each scenario changes your cash flow.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(239,68,68,.12);color:var(--danger)">🔥</div>
-      <h3>Negotiation Forecasting</h3>
-      <p>Model rent adjustments and concession packages before you negotiate. See how each scenario changes your cash flow and break-even timeline.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(168,85,247,.12);color:#a855f7">📥</div>
-      <h3>CSV & Excel Import</h3>
-      <p>Import your existing property data from spreadsheets. Export anytime to CSV or Excel for reporting and backup.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(34,211,238,.12);color:#22d3ee">📝</div>
-      <h3>Activity Logging</h3>
-      <p>Log calls, texts, emails, and notes with rich text formatting and screenshot attachments. Full history for every property.</p>
+      <div class="feature-icon" style="background:rgba(56,189,248,.12);color:#38bdf8">🏠</div>
+      <h3>Property Profiles & Activity Log</h3>
+      <p>Rich detail pages with bedrooms, amenities, lease terms, financials, and contacts. Log calls, texts, emails, and notes with rich text formatting and screenshot attachments.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon" style="background:rgba(244,114,182,.12);color:#f472b6">📅</div>
-      <h3>Follow-Ups & Meetings</h3>
-      <p>Never miss a follow-up. Set dates, get reminders, and manage meetings. Overdue tasks surface automatically on your dashboard.</p>
+      <h3>Follow-Ups, Meetings & Search</h3>
+      <p>Set follow-up dates, get reminders, and manage meetings — overdue tasks surface automatically. Find any property, contact, or detail instantly with smart search and keyboard shortcuts.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(163,230,53,.12);color:#a3e635">🔍</div>
-      <h3>Smart Search</h3>
-      <p>Find any property, contact, phone number, or email instantly. Keyboard shortcut support for power users.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(251,146,60,.12);color:#fb923c">📋</div>
-      <h3>Expense Tracking</h3>
-      <p>Rent, cleaning, insurance, utilities, permits, co-host fees, Airbnb service fees — every cost itemized and calculated automatically.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(148,163,184,.12);color:#94a3b8">🎨</div>
-      <h3>Themes & Customization</h3>
-      <p>Dark mode, light mode, accent colors, compact view, configurable keyboard shortcuts — make your workspace yours.</p>
+      <div class="feature-icon" style="background:rgba(168,85,247,.12);color:#a855f7">📥</div>
+      <h3>Import/Export & Customization</h3>
+      <p>Import property data from CSV or Excel and export anytime for reporting. Dark mode, light mode, 8 accent colors, compact view, and configurable shortcuts — make your workspace yours.</p>
     </div>
   </div>
 </section>
