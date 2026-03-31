@@ -407,7 +407,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <h1>Don't Sign Another Rental Arbitrage Lease Until You Know It'll Actually Make Money</h1>
   <p class="hero-sub">Avoid a $5,000+ mistake by instantly seeing how profit, expenses, and break-even work together. Don't lock yourself into a losing deal!</p>
   <div class="hero-buttons">
-    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Get Started Free →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Analyze Now For Free →</a>
     <a href="javascript:void(0)" class="btn btn-secondary" onclick="handleTutorialGate()">🎓 Try the Interactive Tutorial</a>
   </div>
   <p class="hero-note">No credit card required. Sign in with Google and start in seconds.</p>
@@ -747,7 +747,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <h2>Ready to Scale Your Rental Arbitrage Business?</h2>
   <p>Join investors who are closing deals faster, analyzing opportunities smarter, and growing their portfolios with RentingRadar.</p>
   <div class="hero-buttons">
-    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()">Get Started Free →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()">Analyze Now For Free →</a>
     <a href="#pricing" class="btn btn-secondary">View Pricing</a>
   </div>
   <p style="color:var(--text3);font-size:.82rem;margin-top:14px;position:relative">No credit card required. Free plan includes 50 properties.</p>
@@ -962,7 +962,7 @@ function updateAuthUI(){
         el.href = 'https://app.rentingradar.com';
         el.target = '_blank';
         el.onclick = null;
-        if(orig.indexOf('Get Started') > -1) el.textContent = 'Go To Dashboard →';
+        if(orig.indexOf('Analyze Now') > -1) el.textContent = 'Go To Dashboard →';
         else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
       }
     });
@@ -1013,7 +1013,7 @@ function updateAuthUI(){
         el.href = 'https://app.rentingradar.com';
         el.onclick = null;
         var orig = el.dataset.origText;
-        if(orig && orig.indexOf('Get Started') > -1) el.textContent = 'Go To App →';
+        if(orig && orig.indexOf('Analyze Now') > -1) el.textContent = 'Go To App →';
       }
     });
   } else {
