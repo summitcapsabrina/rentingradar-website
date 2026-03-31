@@ -258,8 +258,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,13,20,.8)
 .price-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
 .price-card.popular{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary),0 12px 40px rgba(99,129,250,.15)}
 .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:.68rem;font-weight:700;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:1px}
-.price-card h3{font-size:1.15rem;font-weight:700;margin-bottom:4px}
-.price-card .price-desc{color:var(--text2);font-size:.85rem;margin-bottom:20px}
+.price-card h3{font-size:1.6rem;font-weight:800;margin-bottom:16px;letter-spacing:-.3px;background:linear-gradient(135deg,#fff 30%,var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.price-card.popular h3{background:linear-gradient(135deg,#fff 20%,#818cf8 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .price-amount{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
 .price-amount .dollar{font-size:2.4rem;font-weight:800;color:#fff}
 .price-amount .period{color:var(--text2);font-size:.88rem}
@@ -1062,7 +1062,7 @@ document.addEventListener('click', function(e){
 var billingPeriod = 'yearly';
 
 var TIERS = {
-  free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Analyze 1 deal per month for free', features:['Analyze 1 property per month','Pipeline view','Full-scope property profiles','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes'] },
+  free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Analyze 1 deal per month for free', features:['Analyze 1 property per month','Pipeline management','Full-scope property profiles','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes'] },
   basic: { name:'Basic', monthly:9.99, yearly:89.99, desc:'Analyze up to 10 deals per month', features:['Analyze 10 properties per month','Everything in Free','CSV import & export','Dark mode & 8 color themes'], disabled:[] },
   pro:   { name:'Pro',   monthly:14.99, yearly:149.99, desc:'Unlimited analyses for serious operators', features:['Analyze unlimited properties','Everything in Basic','Negotiation Forecasting Tools','Priority feature requests'], disabled:[] }
 };
@@ -1106,7 +1106,6 @@ function renderPricingCards(){
     html += '<div class="price-card'+(isPopular?' popular':'')+'" data-tier="'+tier+'">';
     if(isPopular) html += '<div class="popular-badge">Most Popular</div>';
     html += '<h3>'+t.name+'</h3>';
-    html += '<p class="price-desc">'+t.desc+'</p>';
     html += '<div class="price-amount">'+priceHtml+'</div>';
     html += '<p class="price-yearly">'+billedNote+'</p>';
     html += '<ul class="price-features">';
