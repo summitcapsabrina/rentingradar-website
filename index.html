@@ -43,9 +43,9 @@
   "url": "https://rentingradar.com",
   "description": "The all-in-one CRM built for rental arbitrage investors. Track leads, analyze deals, and manage your pipeline.",
   "offers": [
-    { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free" },
-    { "@type": "Offer", "price": "10.99", "priceCurrency": "USD", "name": "Basic", "billingIncrement": "P1M" },
-    { "@type": "Offer", "price": "17.99", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "P1M" }
+    { "@type": "Offer", "price": "9.99", "priceCurrency": "USD", "name": "Basic", "billingIncrement": "P1M" },
+    { "@type": "Offer", "price": "19.99", "priceCurrency": "USD", "name": "Standard", "billingIncrement": "P1M" },
+    { "@type": "Offer", "price": "29.99", "priceCurrency": "USD", "name": "Pro", "billingIncrement": "P1M" }
   ],
   "featureList": [
     "Sales Pipeline & CRM",
@@ -87,7 +87,7 @@
     {
       "@type": "Question",
       "name": "Can I import listings from Zillow, Apartments.com, or other sites?",
-      "acceptedAnswer": { "@type": "Answer", "text": "You can add properties manually with full detail entry, or import your existing data via CSV or Excel files. Basic and Pro plans include CSV import/export, and Pro adds .xlsx support." }
+      "acceptedAnswer": { "@type": "Answer", "text": "You can add properties manually with full detail entry, or import your existing data via CSV or Excel files. Standard and Pro plans include CSV import/export." }
     }
   ]
 }
@@ -403,14 +403,14 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><span class="pulse"></span> Free to Get Started</div>
+  <div class="hero-badge"><span class="pulse"></span> 7-Day Free Trial on All Plans</div>
   <h1>Don't Sign Another Rental Arbitrage Lease Until You Know It'll Actually Make Money</h1>
   <p class="hero-sub">Avoid a $5,000+ mistake by instantly seeing how profit, expenses, and break-even work together. Don't lock yourself into a losing deal!</p>
   <div class="hero-buttons">
-    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Analyze Now For Free →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Start Free Trial →</a>
     <a href="javascript:void(0)" class="btn btn-secondary" onclick="handleTutorialGate()">🎓 Try the Interactive Tutorial</a>
   </div>
-  <p class="hero-note">No credit card required. Sign in with Google and start in seconds.</p>
+  <p class="hero-note">7-day free trial. No charge until your trial ends.</p>
 
   <!-- App Preview Window -->
   <div class="hero-preview">
@@ -681,7 +681,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
 <section class="pricing" id="pricing">
   <div class="section-label">Pricing</div>
   <h2 class="section-title">Simple, Transparent Pricing</h2>
-  <p class="section-subtitle">Start free and upgrade as your portfolio grows. No hidden fees, cancel anytime.</p>
+  <p class="section-subtitle">Every plan includes a 7-day free trial. No hidden fees, cancel anytime.</p>
   <div style="text-align:center">
     <div class="billing-toggle" id="billingToggle">
       <div class="bt-opt" data-period="monthly" onclick="setBillingPeriod('monthly')">Monthly</div>
@@ -730,7 +730,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
         Can I import listings from rental sites?
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </div>
-      <div class="faq-a"><p>You can add properties manually with our streamlined entry form, or import your existing property data via CSV or Excel files. Basic and Pro plans include data import/export capabilities.</p></div>
+      <div class="faq-a"><p>You can add properties manually with our streamlined entry form, or import your existing property data via CSV or Excel files. Standard and Pro plans include data import/export capabilities.</p></div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
@@ -747,10 +747,10 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   <h2>Ready to Scale Your Rental Arbitrage Business?</h2>
   <p>Join investors who are closing deals faster, analyzing opportunities smarter, and growing their portfolios with RentingRadar.</p>
   <div class="hero-buttons">
-    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()">Analyze Now For Free →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()">Start Free Trial →</a>
     <a href="#pricing" class="btn btn-secondary">View Pricing</a>
   </div>
-  <p style="color:var(--text3);font-size:.82rem;margin-top:14px;position:relative">No credit card required. Free plan includes 50 properties.</p>
+  <p style="color:var(--text3);font-size:.82rem;margin-top:14px;position:relative">7-day free trial on all plans. No charge until your trial ends.</p>
 </section>
 
 <!-- FOOTER -->
@@ -803,7 +803,7 @@ const GIS_CLIENT_ID = '622768449810-s72d56u4fherfif72the4cffb8epk1ml.apps.google
 firebase.initializeApp(FIREBASE_CONFIG);
 var db = firebase.firestore();
 let currentUser = null;
-let currentUserTier = 'free';
+let currentUserTier = null;
 let _rrCookieUser = null; // User info from cross-domain cookie (set by the app)
 
 // Read cross-domain cookie set by app.rentingradar.com
@@ -822,7 +822,7 @@ firebase.auth().onAuthStateChanged(async function(user){
     window.location.href = 'https://app.rentingradar.com';
     return;
   } else {
-    currentUserTier = 'free';
+    currentUserTier = null;
     // Check if user is signed in on the app via cross-domain cookie
     _rrCookieUser = getRRCookieUser();
   }
@@ -932,14 +932,14 @@ function updateAuthUI(){
     if(mdAct) mdAct.innerHTML = '<a href="https://app.rentingradar.com" onclick="closeMobileMenu()" style="justify-content:center;font-weight:600;color:var(--primary)">Open App</a><button onclick="closeMobileMenu();handleSignOut()" style="justify-content:center;color:var(--text3)">Sign Out</button>';
 
     // Update all auth-gate buttons to link directly to the app and change text
-    var userTier = currentUserTier || 'free';
+    var userTier = currentUserTier || null;
     document.querySelectorAll('.auth-gate').forEach(function(el){
       if(!el.dataset.origText) el.dataset.origText = el.textContent.trim();
       var orig = el.dataset.origText;
       var plan = el.dataset.plan;
       // Pricing card buttons get special treatment
       if(plan){
-        var tierOrder = {free:0, basic:1, pro:2};
+        var tierOrder = {basic:0, standard:1, pro:2};
         var card = el.closest('.price-card');
         if(card){ card.classList.remove('current-plan'); }
         el.className = 'price-btn auth-gate';
@@ -962,7 +962,7 @@ function updateAuthUI(){
         el.href = 'https://app.rentingradar.com';
         el.target = '_blank';
         el.onclick = null;
-        if(orig.indexOf('Analyze Now') > -1) el.textContent = 'Go To Dashboard →';
+        if(orig.indexOf('Start Free Trial') > -1 || orig.indexOf('Analyze Now') > -1) el.textContent = 'Go To Dashboard →';
         else if(orig.indexOf('Open App') > -1) el.textContent = 'Open App';
       }
     });
@@ -1040,8 +1040,7 @@ function updateAuthUI(){
         var card = el.closest('.price-card');
         if(card) card.classList.remove('current-plan');
         el.className = 'price-btn auth-gate';
-        if(plan === 'free') el.classList.add('price-btn-outline');
-        else if(plan === 'basic') el.classList.add('price-btn-fill');
+        if(plan === 'standard') el.classList.add('price-btn-fill');
         else el.classList.add('price-btn-outline');
       } else {
         el.onclick = handleAuthGate;
@@ -1062,9 +1061,9 @@ document.addEventListener('click', function(e){
 var billingPeriod = 'yearly';
 
 var TIERS = {
-  free:  { name:'Free',  monthly:0,     yearly:0,     desc:'Analyze 1 deal per month for free', features:['Analyze 1 property per month','Pipeline management','Full-scope property profiles','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes'] },
-  basic: { name:'Basic', monthly:9.99, yearly:89.99, desc:'Analyze up to 10 deals per month', features:['Analyze 10 properties per month','Everything in Free','CSV import & export','Dark mode & 8 color themes'], disabled:[] },
-  pro:   { name:'Pro',   monthly:14.99, yearly:149.99, desc:'Unlimited analyses for serious operators', features:['Analyze unlimited properties','Everything in Basic','Negotiation Forecasting Tools','Priority feature requests'], disabled:[] }
+  basic:    { name:'Basic',    monthly:9.99,  yearly:89.99,  desc:'Analyze 1 deal per month — perfect for getting started', features:['Analyze 1 property per month','Up to 15 properties','Pipeline management','Full-scope property profiles','Follow-up reminders & notifications','Expense tracking'], disabled:['CSV import & export','Dark mode & color themes','Negotiation Forecasting Tools'] },
+  standard: { name:'Standard', monthly:19.99, yearly:199.99, desc:'Analyze up to 10 deals per month with full tools', features:['Analyze 10 properties per month','Up to 50 properties','Everything in Basic','CSV import & export','Dark mode & 8 color themes'], disabled:['Negotiation Forecasting Tools'] },
+  pro:      { name:'Pro',      monthly:29.99, yearly:289.99, desc:'Unlimited analyses for serious operators', features:['Analyze unlimited properties','Unlimited properties','Everything in Standard','Negotiation Forecasting Tools','Priority feature requests'], disabled:[] }
 };
 
 function setBillingPeriod(period){
@@ -1080,26 +1079,22 @@ function renderPricingCards(){
   if(!grid) return;
   var isYearly = billingPeriod === 'yearly';
   var html = '';
-  ['free','basic','pro'].forEach(function(tier){
+  ['basic','standard','pro'].forEach(function(tier){
     var t = TIERS[tier];
-    var isPopular = tier === 'basic';
+    var isPopular = tier === 'standard';
     var priceHtml, billedNote;
-    if(t.monthly === 0){
-      priceHtml = '<span class="dollar">$0.00</span><span class="period">/month</span>';
-      billedNote = 'Free forever';
-    } else if(isYearly){
+    if(isYearly){
       var perMonth = (t.yearly / 12).toFixed(2);
       priceHtml = '<span class="price-old">$'+t.monthly.toFixed(2)+'</span><span class="dollar">$'+perMonth+'</span><span class="period">/mo</span>';
-      billedNote = 'Billed annually at $'+t.yearly.toFixed(2)+'/year';
+      billedNote = 'Billed annually at $'+t.yearly.toFixed(2)+'/year<br><span style="font-size:.75rem;color:var(--text2)">7-day free trial</span>';
     } else {
       priceHtml = '<span class="dollar">$'+t.monthly.toFixed(2)+'</span><span class="period">/mo</span>';
-      billedNote = 'Billed monthly';
+      billedNote = 'Billed monthly<br><span style="font-size:.75rem;color:var(--text2)">7-day free trial</span>';
     }
     var btnText, btnClass;
     if(!currentUser){
-      if(tier === 'free'){ btnText = 'Get Started Free'; btnClass = 'price-btn-outline'; }
-      else if(tier === 'basic'){ btnText = 'Start Basic Plan'; btnClass = 'price-btn-fill'; }
-      else { btnText = 'Start Pro Plan'; btnClass = 'price-btn-outline'; }
+      if(tier === 'standard'){ btnText = 'Start Free Trial'; btnClass = 'price-btn-fill'; }
+      else { btnText = 'Start Free Trial'; btnClass = 'price-btn-outline'; }
     } else {
       btnText = ''; btnClass = '';
     }
@@ -1122,11 +1117,7 @@ function renderPricingCards(){
 
 function handlePricingClick(tier){
   // All checkout flows go through the app (which uses secure Cloud Functions)
-  if(tier === 'free'){
-    window.location.href = 'https://app.rentingradar.com';
-  } else {
-    window.location.href = 'https://app.rentingradar.com#pricing';
-  }
+  window.location.href = 'https://app.rentingradar.com#pricing';
 }
 
 // Initial render
