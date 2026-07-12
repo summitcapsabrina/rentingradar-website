@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "rentingradar"
+  },
+  "targets": {
+    "rentingradar": {
+      "hosting": {
+        "website": [
+          "rentingradar-website"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
