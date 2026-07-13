@@ -1625,7 +1625,9 @@ renderPricingCards();
   ];
 
   // Gradient palette sampled from the hero video (cyan→periwinkle→purple→rose→coral)
-  var STOPS = [[108,201,240],[154,140,255],[197,105,230],[239,106,143],[240,151,109]];
+  // Same hue stops as --grad-text (header gradient), saturated a touch so the dots
+  // punch like the header does instead of reading as dim pastels on the dark canvas.
+  var STOPS = [[86,199,247],[140,120,255],[201,84,236],[244,84,132],[247,142,92]];
   function grad(t){ t=t<0?0:t>1?1:t; var f=t*(STOPS.length-1), i=Math.floor(f), k=f-i;
     if(i>=STOPS.length-1) i=STOPS.length-2, k=1; var a=STOPS[i], b=STOPS[i+1];
     return [a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k, a[2]+(b[2]-a[2])*k]; }
@@ -1753,8 +1755,8 @@ renderPricingCards();
       }
       ctx.strokeStyle=col+lineA+')'; ctx.lineWidth=0.6;
       ctx.beginPath(); ctx.moveTo(pb.x,pb.y); ctx.lineTo(pa.x,pa.y); ctx.stroke();
-      var tw=0.80+0.20*Math.sin(time*1.5+p.ph);
-      ctx.fillStyle=col+((0.40+0.5*p.v)*Math.min(1,d)*tw)+')';
+      var tw=0.86+0.14*Math.sin(time*1.5+p.ph);
+      ctx.fillStyle=col+((0.70+0.30*p.v)*Math.min(1,d)*tw)+')';
       ctx.beginPath(); ctx.arc(pa.x,pa.y,(1.0+1.7*p.v)*d*dotMul,0,TAU); ctx.fill();
     }
     ctx.globalCompositeOperation='source-over';
