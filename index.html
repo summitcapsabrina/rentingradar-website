@@ -11,25 +11,32 @@
 (function(){
   // ── Fill in from GA4 + Google Ads, then redeploy (see tracking-setup notes) ──
   var GA4_ID             = 'G-NVKYVD2MDY';       // GA4 › Admin › Data Streams › Measurement ID
-  var ADS_ID             = 'AW-XXXXXXXXXX';      // Google Ads › Goals › Conversions › Google tag (AW-…)
-  var ADS_TRIAL_LABEL    = 'TRIAL_LABEL_XXXX';   // Ads conversion action "Start trial" → its label
-  var ADS_PURCHASE_LABEL = 'PURCHASE_LABEL_XXX'; // Ads conversion action "Subscribe" → its label
+  var ADS_ID             = 'AW-18319502230';     // Google Ads › Goals › Conversions › Google tag (AW-…)
+  var ADS_TRIAL_LABEL    = 'qwNKCIrGrM8cEJbXtZ9E'; // Ads conversion action "Start trial" → its label
+  var ADS_PURCHASE_LABEL = '2uUCCKCxxM8cEJbXtZ9E'; // Ads conversion action "Subscribe" → its label
   // ─────────────────────────────────────────────────────────────────────────────
   var ok = function(v){ return v && v.indexOf('X') === -1; };
   window.RR_ADS_ID = ADS_ID;
   window.dataLayer = window.dataLayer || [];
   window.gtag = function(){ dataLayer.push(arguments); };
 
+  // Enhanced Conversions: hand gtag the user's email so it can hash + match. Normalized, never stored by us.
+  function rrSetUserData(email){
+    if(!email) return;
+    try { gtag('set','user_data',{ email: String(email).trim().toLowerCase() }); } catch(e){}
+  }
   // Trial signup — fires once per browser session across every signup path.
-  window.rrTrackSignup = function(method){
+  window.rrTrackSignup = function(method, email){
     try { if(sessionStorage.getItem('rr_signup_tracked')) return;
           sessionStorage.setItem('rr_signup_tracked','1'); } catch(e){}
+    rrSetUserData(email);
     gtag('event','sign_up',{ method: method || 'unknown' });
     if(ok(ADS_ID) && ok(ADS_TRIAL_LABEL))
       gtag('event','conversion',{ send_to: ADS_ID + '/' + ADS_TRIAL_LABEL });
   };
-  // Paid subscription — value optional (enrich later from the Stripe session).
-  window.rrTrackPurchase = function(value, tier){
+  // Paid subscription — value + tier + email come from the checkout stash on Stripe return.
+  window.rrTrackPurchase = function(value, tier, email){
+    rrSetUserData(email);
     gtag('event','purchase',{ value: value||0, currency:'USD', items: tier?[{item_name:tier}]:undefined });
     if(ok(ADS_ID) && ok(ADS_PURCHASE_LABEL))
       gtag('event','conversion',{ send_to: ADS_ID + '/' + ADS_PURCHASE_LABEL, value: value||0, currency:'USD' });
@@ -53,7 +60,10 @@
         var sid = p.get('session_id') || '1';
         if(localStorage.getItem('rr_purchase_'+sid) !== '1'){
           localStorage.setItem('rr_purchase_'+sid,'1');
-          rrTrackPurchase(0, null);
+          var pend = null;
+          try { pend = JSON.parse(localStorage.getItem('rr_pending_purchase')||'null'); } catch(e2){}
+          rrTrackPurchase(pend && pend.value, pend && pend.tier, pend && pend.email);
+          try { localStorage.removeItem('rr_pending_purchase'); } catch(e2){}
         }
       }
     }
@@ -276,6 +286,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);bac
 .btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
 .btn-secondary:hover{border-color:var(--primary);color:var(--heading);transform:translateY(-2px)}
 .hero-note{color:var(--text3);font-size:.82rem;margin-bottom:0}
+.hero-trust{display:flex;flex-wrap:nowrap;justify-content:center;gap:36px;max-width:1260px;margin:44px auto 0;padding-top:22px;border-top:1px solid var(--border)}
+.hero-trust .ht-item{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;color:var(--text2);font-size:.83rem;font-weight:500;line-height:1.3}
+.hero-trust .ht-item svg{width:15px;height:15px;color:var(--primary);flex-shrink:0}
 
 /* Hero App Preview */
 .hero-preview{position:relative;max-width:none;margin:0;width:100%}
@@ -496,6 +509,7 @@ footer{padding:48px 32px 32px;border-top:1px solid var(--border)}
   .hero h1{margin:0 auto 20px}
   .hero .hero-sub{margin:0 auto 28px}
   .hero-buttons{justify-content:center}
+  .hero-trust{flex-wrap:wrap;justify-content:center;gap:10px 20px}
   .hero-note{margin-bottom:8px}
   .hero-preview{max-width:780px;margin:0 auto}
 }
@@ -732,10 +746,10 @@ html.light .hero-badge{color:#4a63e6;border-color:rgba(79,110,240,.32)}
   <div class="hero-inner">
     <div class="hero-copy">
       <div class="hero-badge"><span class="pulse"></span> 7-Day Free Trial on All Plans</div>
-      <h1>Automate, Negotiate, and Operate Your Rental Arbitrage Portfolio — In One Place</h1>
+      <h1>The AI-Powered CRM for Rental Arbitrage, Co-Hosting, and Operations</h1>
       <p class="hero-sub">Prospect new deals at lightspeed ⚡ — import any listing with one click and tap a massive vault of rental arbitrage data through Sabrina ✨, our trained AI expert. Then analyze, negotiate, and operate every deal, from first showing to five-star reviews.</p>
       <div class="hero-buttons">
-        <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()" id="heroGetStarted">Start Free Trial →</a>
+        <a href="javascript:void(0)" class="btn btn-primary auth-gate" data-cta="signup" onclick="handleAuthGate('signup')" id="heroGetStarted">Start Free Trial →</a>
       </div>
       <p class="hero-note">No charge until your trial ends. Cancel Anytime.</p>
     </div>
@@ -749,6 +763,12 @@ html.light .hero-badge{color:#4a63e6;border-color:rgba(79,110,240,.32)}
         </video>
       </div>
     </div>
+  </div>
+  <div class="hero-trust">
+    <span class="ht-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5"/></svg>Built by investors, for investors</span>
+    <span class="ht-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>Up and running in 30 seconds</span>
+    <span class="ht-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Secure Stripe billing</span>
+    <span class="ht-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Cancel anytime, no lock-in</span>
   </div>
 </section>
 
@@ -1131,7 +1151,7 @@ html.light .hero-badge{color:#4a63e6;border-color:rgba(79,110,240,.32)}
   <h2>Ready to Scale Your Rental Arbitrage Business?</h2>
   <p>Join investors who are closing deals faster, analyzing opportunities smarter, and growing their portfolios with RentingRadar.</p>
   <div class="hero-buttons">
-    <a href="javascript:void(0)" class="btn btn-primary auth-gate" onclick="handleAuthGate()">Start Free Trial →</a>
+    <a href="javascript:void(0)" class="btn btn-primary auth-gate" data-cta="signup" onclick="handleAuthGate('signup')">Start Free Trial →</a>
     <a href="#pricing" class="btn btn-secondary">View Pricing</a>
   </div>
   <p style="color:var(--text3);font-size:.82rem;margin-top:14px;position:relative">7-day free trial on all plans. No charge until your trial ends.</p>
@@ -1321,18 +1341,29 @@ function toggleTheme(btn){
 // Sync labels/aria/meta with the theme the <head> snippet applied before paint
 rrApplyTheme(document.documentElement.classList.contains('light'));
 
-function handleAuthGate(){
-  // Forward ad-click identifiers + UTMs across the domain hop so the app can
-  // attribute the trial signup back to the campaign (gclid/gbraid/wbraid = Google Ads).
+// Forward ad-click identifiers + UTMs across the domain hop so the app can
+// attribute the trial signup back to the campaign (gclid/gbraid/wbraid = Google Ads).
+function rrForwardParams(){
   var keep = ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
   var src = new URLSearchParams(window.location.search), out = new URLSearchParams();
   keep.forEach(function(k){ var v = src.get(k); if(v) out.set(k, v); });
+  return out;
+}
+
+function handleAuthGate(arg){
+  // Trial CTAs pass 'signup' (or carry data-cta="signup"), so the app opens in signup mode
+  // ("Start your free trial.") instead of a sign-in form. Sign In / Open App stay signin.
+  var out = rrForwardParams();
+  var el = arg && arg.currentTarget;
+  var signup = (arg === 'signup') || !!(el && el.dataset && el.dataset.cta === 'signup');
+  if(signup) out.set('signup', '1');
   var qs = out.toString();
   window.location.href = 'https://app.rentingradar.com' + (qs ? ('?' + qs) : '');
 }
 
 function handleTutorialGate(){
-  window.location.href = 'https://app.rentingradar.com?tutorial=1';
+  var out = rrForwardParams(); out.set('tutorial', '1');
+  window.location.href = 'https://app.rentingradar.com?' + out.toString();
 }
 
 function updateAuthUI(){
@@ -1561,8 +1592,10 @@ function renderPricingCards(){
 }
 
 function handlePricingClick(tier){
-  // All checkout flows go through the app (which uses secure Cloud Functions)
-  window.location.href = 'https://app.rentingradar.com#pricing';
+  // All checkout flows go through the app (which uses secure Cloud Functions).
+  // Signed-out visitors land in signup mode on the pricing view.
+  var out = rrForwardParams(); out.set('signup', '1');
+  window.location.href = 'https://app.rentingradar.com?' + out.toString() + '#pricing';
 }
 
 // Initial render
