@@ -3,6 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ═══ RentingRadar analytics + ads conversion tracking (GA4 + Google Ads) ═══
+     Cross-domain funnel: rentingradar.com (landing) → app.rentingradar.com (trial + paid).
+     INERT until the 4 IDs below are filled in. After filling them, redeploy BOTH sites.
+     Keep this block byte-identical in rentingradar-website/index.html and rentingradar-app/index.html. -->
+<script>
+(function(){
+  // ── Fill in from GA4 + Google Ads, then redeploy (see tracking-setup notes) ──
+  var GA4_ID             = 'G-NVKYVD2MDY';       // GA4 › Admin › Data Streams › Measurement ID
+  var ADS_ID             = 'AW-18319502230';     // Google Ads › Goals › Conversions › Google tag (AW-…)
+  var ADS_TRIAL_LABEL    = 'qwNKCIrGrM8cEJbXtZ9E'; // Ads conversion action "Start trial" → its label
+  var ADS_PURCHASE_LABEL = '2uUCCKCxxM8cEJbXtZ9E'; // Ads conversion action "Subscribe" → its label
+  // ─────────────────────────────────────────────────────────────────────────────
+  var ok = function(v){ return v && v.indexOf('X') === -1; };
+  window.RR_ADS_ID = ADS_ID;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+
+  // Enhanced Conversions: hand gtag the user's email so it can hash + match. Normalized, never stored by us.
+  function rrSetUserData(email){
+    if(!email) return;
+    try { gtag('set','user_data',{ email: String(email).trim().toLowerCase() }); } catch(e){}
+  }
+  // Trial signup — fires once per browser session across every signup path.
+  window.rrTrackSignup = function(method, email){
+    try { if(sessionStorage.getItem('rr_signup_tracked')) return;
+          sessionStorage.setItem('rr_signup_tracked','1'); } catch(e){}
+    rrSetUserData(email);
+    gtag('event','sign_up',{ method: method || 'unknown' });
+    if(ok(ADS_ID) && ok(ADS_TRIAL_LABEL))
+      gtag('event','conversion',{ send_to: ADS_ID + '/' + ADS_TRIAL_LABEL });
+  };
+  // Paid subscription — value + tier + email come from the checkout stash on Stripe return.
+  window.rrTrackPurchase = function(value, tier, email){
+    rrSetUserData(email);
+    gtag('event','purchase',{ value: value||0, currency:'USD', items: tier?[{item_name:tier}]:undefined });
+    if(ok(ADS_ID) && ok(ADS_PURCHASE_LABEL))
+      gtag('event','conversion',{ send_to: ADS_ID + '/' + ADS_PURCHASE_LABEL, value: value||0, currency:'USD' });
+  };
+
+  var active = [GA4_ID, ADS_ID].filter(ok);
+  if(!active.length) return;  // no IDs yet → silent no-op, nothing loads
+  var s = document.createElement('script');
+  s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + active[0];
+  document.head.appendChild(s);
+  gtag('js', new Date());
+  var linker = { domains: ['rentingradar.com','app.rentingradar.com'] };
+  if(ok(GA4_ID)) gtag('config', GA4_ID, { linker: linker });
+  if(ok(ADS_ID)) gtag('config', ADS_ID, { linker: linker });
+
+  // Paid conversion when Stripe returns to app.rentingradar.com?checkout=success
+  try {
+    if(location.hostname.indexOf('app.') === 0){
+      var p = new URLSearchParams(location.search);
+      if(p.get('checkout') === 'success'){
+        var sid = p.get('session_id') || '1';
+        if(localStorage.getItem('rr_purchase_'+sid) !== '1'){
+          localStorage.setItem('rr_purchase_'+sid,'1');
+          var pend = null;
+          try { pend = JSON.parse(localStorage.getItem('rr_pending_purchase')||'null'); } catch(e2){}
+          rrTrackPurchase(pend && pend.value, pend && pend.tier, pend && pend.email);
+          try { localStorage.removeItem('rr_pending_purchase'); } catch(e2){}
+        }
+      }
+    }
+  } catch(e){}
+})();
+</script>
+<!-- ═══ end analytics ═══ -->
 <title>Privacy Policy — RentingRadar</title>
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="icon" type="image/x-icon" href="../favicon.ico">
