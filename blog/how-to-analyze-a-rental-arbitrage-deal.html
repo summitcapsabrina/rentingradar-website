@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ═══ RentingRadar analytics + ads conversion tracking (GA4 + Google Ads) ═══
+     Cross-domain funnel: rentingradar.com (landing) → app.rentingradar.com (trial + paid).
+     INERT until the 4 IDs below are filled in. After filling them, redeploy BOTH sites.
+     Keep this block byte-identical in rentingradar-website/index.html and rentingradar-app/index.html. -->
+<script>
+(function(){
+  // ── Fill in from GA4 + Google Ads, then redeploy (see tracking-setup notes) ──
+  var GA4_ID             = 'G-NVKYVD2MDY';       // GA4 › Admin › Data Streams › Measurement ID
+  var ADS_ID             = 'AW-18319502230';     // Google Ads › Goals › Conversions › Google tag (AW-…)
+  var ADS_TRIAL_LABEL    = 'qwNKCIrGrM8cEJbXtZ9E'; // Ads conversion action "Start trial" → its label
+  var ADS_PURCHASE_LABEL = '2uUCCKCxxM8cEJbXtZ9E'; // Ads conversion action "Subscribe" → its label
+  // ─────────────────────────────────────────────────────────────────────────────
+  var ok = function(v){ return v && v.indexOf('X') === -1; };
+  window.RR_ADS_ID = ADS_ID;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+
+  // Enhanced Conversions: hand gtag the user's email so it can hash + match. Normalized, never stored by us.
+  function rrSetUserData(email){
+    if(!email) return;
+    try { gtag('set','user_data',{ email: String(email).trim().toLowerCase() }); } catch(e){}
+  }
+  // Trial signup — fires once per browser session across every signup path.
+  window.rrTrackSignup = function(method, email){
+    try { if(sessionStorage.getItem('rr_signup_tracked')) return;
+          sessionStorage.setItem('rr_signup_tracked','1'); } catch(e){}
+    rrSetUserData(email);
+    gtag('event','sign_up',{ method: method || 'unknown' });
+    if(ok(ADS_ID) && ok(ADS_TRIAL_LABEL))
+      gtag('event','conversion',{ send_to: ADS_ID + '/' + ADS_TRIAL_LABEL });
+  };
+  // Paid subscription — value + tier + email come from the checkout stash on Stripe return.
+  window.rrTrackPurchase = function(value, tier, email){
+    rrSetUserData(email);
+    gtag('event','purchase',{ value: value||0, currency:'USD', items: tier?[{item_name:tier}]:undefined });
+    if(ok(ADS_ID) && ok(ADS_PURCHASE_LABEL))
+      gtag('event','conversion',{ send_to: ADS_ID + '/' + ADS_PURCHASE_LABEL, value: value||0, currency:'USD' });
+  };
+
+  var active = [GA4_ID, ADS_ID].filter(ok);
+  if(!active.length) return;  // no IDs yet → silent no-op, nothing loads
+  var s = document.createElement('script');
+  s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + active[0];
+  document.head.appendChild(s);
+  gtag('js', new Date());
+  var linker = { domains: ['rentingradar.com','app.rentingradar.com'] };
+  if(ok(GA4_ID)) gtag('config', GA4_ID, { linker: linker });
+  if(ok(ADS_ID)) gtag('config', ADS_ID, { linker: linker });
+
+  // Paid conversion when Stripe returns to app.rentingradar.com?checkout=success
+  try {
+    if(location.hostname.indexOf('app.') === 0){
+      var p = new URLSearchParams(location.search);
+      if(p.get('checkout') === 'success'){
+        var sid = p.get('session_id') || '1';
+        if(localStorage.getItem('rr_purchase_'+sid) !== '1'){
+          localStorage.setItem('rr_purchase_'+sid,'1');
+          var pend = null;
+          try { pend = JSON.parse(localStorage.getItem('rr_pending_purchase')||'null'); } catch(e2){}
+          rrTrackPurchase(pend && pend.value, pend && pend.tier, pend && pend.email);
+          try { localStorage.removeItem('rr_pending_purchase'); } catch(e2){}
+        }
+      }
+    }
+  } catch(e){}
+})();
+</script>
+<!-- ═══ end analytics ═══ -->
+<title>How to Analyze a Rental Arbitrage Deal Before You Sign | RentingRadar</title>
+<meta name="description" content="How to check whether a rental arbitrage deal actually works before you sign: comparable revenue, break-even occupancy, real costs, and the spread.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal">
+<meta name="theme-color" content="#0b0d14">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal">
+<meta property="og:title" content="How to Analyze a Rental Arbitrage Deal Before You Sign">
+<meta property="og:description" content="Comparable revenue, break-even occupancy, real costs, and the spread — the checks to run before you sign a lease.">
+<meta property="og:site_name" content="RentingRadar">
+<meta property="og:image" content="https://rentingradar.com/screenshots/hero-demo-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to Analyze a Rental Arbitrage Deal Before You Sign">
+<meta name="twitter:description" content="Comparable revenue, break-even occupancy, real costs, and the spread, before you sign a lease.">
+<meta name="twitter:image" content="https://rentingradar.com/screenshots/hero-demo-poster.jpg">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/blog/blog.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Analyze a Rental Arbitrage Deal Before You Sign",
+  "description": "How to check whether a rental arbitrage deal actually works before you sign: comparable revenue, break-even occupancy, real costs, and the spread.",
+  "datePublished": "2026-08-05",
+  "dateModified": "2026-08-05",
+  "author": { "@type": "Organization", "name": "RentingRadar", "url": "https://rentingradar.com" },
+  "publisher": { "@type": "Organization", "name": "RentingRadar", "logo": { "@type": "ImageObject", "url": "https://rentingradar.com/apple-touch-icon.png" } },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal" },
+  "image": "https://rentingradar.com/screenshots/hero-demo-poster.jpg"
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 24 24" fill="#6381fa"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.27 7.5 12 10.82 4.73 7.5 12 4.18zM4 8.99l7 3.5v7.03l-7-3.5V8.99zm9 10.53V12.49l7-3.5v7.03l-7 3.5z"/></svg>
+    RentingRadar
+  </a>
+  <div class="nav-links">
+    <a href="/#features">Features</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/blog" class="active">Blog</a>
+    <a href="https://app.rentingradar.com" class="nav-cta">Start Free Trial</a>
+  </div>
+</nav>
+
+<div class="article-wrap">
+  <nav class="breadcrumb"><a href="/">Home</a> &rsaquo; <a href="/blog">Blog</a> &rsaquo; Deal Analysis</nav>
+  <article>
+    <div class="eyebrow">Deal Analysis</div>
+    <h1>How to Analyze a Rental Arbitrage Deal Before You Sign</h1>
+    <div class="post-meta"><span>August 5, 2026</span><span>·</span><span>4 min read</span></div>
+
+    <div class="key-takeaway">
+      <h3>TL;DR</h3>
+      <p>Before signing a lease, run the numbers for real: pull comparable Airbnb listings for the unit's size and location, estimate average daily rate and occupancy, and compare projected monthly revenue against the full cost of rent, furnishing, and operating expenses. The fastest free check uses Airbnb's own search filters and a spreadsheet; a deal calculator does the same math in seconds.</p>
+    </div>
+
+    <p>A lease is a 12-month commitment and usually a personal guarantee. The only thing that makes signing one a reasonable bet is running the numbers before you do, not after.</p>
+
+    <h2>1. Pull comparable listings for the unit</h2>
+    <p>Search Airbnb for the neighborhood, set your dates to flexible, and filter by the guest count your unit would sleep. Look at what similar units are actually charging and how booked they appear, not the asking rate of the one listing you happen to like. This is the same comparable-revenue check any operator runs before touring a second time.</p>
+
+    <h2>2. Estimate average daily rate and occupancy</h2>
+    <p>From those comparables, estimate a realistic average nightly rate and a realistic occupancy percentage, not the best-case numbers from a single busy weekend. Occupancy swings by season and by how new your listing is on the platform, so lean conservative on your first pass.</p>
+
+    <h2>3. Work out your break-even occupancy</h2>
+    <p>Monthly rent is a fixed cost whether you have one guest or thirty nights booked, which makes break-even occupancy the single most important number in this analysis. Divide the rent you'd owe by your estimated nightly rate to see roughly how many nights a month you need booked just to cover it, then compare that to the occupancy you estimated in step 2.</p>
+
+    <h2>4. Add the real operating costs</h2>
+    <p>Rent is only one line. Furnishing, cleaning between guests, utilities, supplies, and platform fees all come out of revenue before anything is profit. A deal that only pencils out before these costs is not a deal, it's a rent payment with extra steps.</p>
+
+    <h2>5. Check the spread</h2>
+    <p>Once you have a realistic revenue estimate and the full cost picture, compare projected monthly short-term revenue against the long-term rent. As a rule of thumb, look for a realistic monthly short-term revenue at least <strong>2–3× the long-term rent</strong> so the margin can absorb a slow month, a vacancy, or an unplanned repair. If the spread is thin before you've even accounted for furnishing and turnover costs, it won't survive contact with a real month.</p>
+
+    <h2>6. Confirm legality and permission before you sign, not after</h2>
+    <p>Call the city's planning or licensing office directly to confirm short-term rentals are allowed at that address, and get the landlord's permission to sublease in writing. Neither of these is optional, and both are far cheaper to check now than to discover after a lease is signed.</p>
+
+    <h2>FAQ</h2>
+
+    <h3>What's the fastest free way to estimate a deal?</h3>
+    <p>Search Airbnb for comparable listings in the same neighborhood with flexible dates and the same guest count, and note the rates and apparent booking activity. It costs nothing and takes a few minutes, and it's the same first check most experienced operators run before going any further.</p>
+
+    <h3>What counts as a good spread between revenue and rent?</h3>
+    <p>A realistic monthly short-term revenue of at least 2–3× the long-term rent is a reasonable floor, since that cushion is what absorbs a slow month, cleaning and furnishing costs, and platform fees while still leaving real profit. Below that, a single bad month can erase the margin entirely.</p>
+
+    <h3>Do I need a lawyer to review the lease?</h3>
+    <p>It's not required, but a real estate attorney reviewing a sublease-friendly lease before you sign is a small, one-time cost against a 12-month commitment and a personal guarantee. Many operators skip this step on their first deal and add it once they understand what it's protecting against.</p>
+
+    <h3>How does a deal calculator make this faster?</h3>
+    <p>RentingRadar's deal calculator runs this same math, comparable revenue, break-even occupancy, and cost of rent, furnishing, and operations, in one place and scores the result with a Deal Temperature, so you can see at a glance whether a specific unit is a slam-dunk or a no-go before you spend more time on it.</p>
+
+    <p>For a deeper framework on picking the market itself, before you get to any specific unit, see <a href="/blog/how-to-find-a-rental-arbitrage-market">how to find a market that allows rental arbitrage</a>.</p>
+  </article>
+
+  <div class="post-cta">
+    <h3>Score deals before you commit</h3>
+    <p>RentingRadar imports a listing in one click and scores it with a Deal Temperature, so you know which units are worth pursuing before you spend an afternoon on the math yourself.</p>
+    <a class="btn" href="https://app.rentingradar.com">Start your free trial →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo">
+        <svg viewBox="0 0 24 24" fill="#6381fa" width="24" height="24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.27 7.5 12 10.82 4.73 7.5 12 4.18zM4 8.99l7 3.5v7.03l-7-3.5V8.99zm9 10.53V12.49l7-3.5v7.03l-7 3.5z"/></svg>
+        RentingRadar
+      </a>
+      <p>The AI-powered CRM built for rental arbitrage investors. Import listings in one click, analyze deals, and manage your portfolio.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Product</h3>
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#faq">FAQ</a>
+      <a href="https://app.rentingradar.com">Open App</a>
+    </div>
+    <div class="footer-col">
+      <h3>Resources</h3>
+      <a href="/blog">Blog</a>
+      <a href="/#how-it-works">How It Works</a>
+      <a href="mailto:help@rentingradar.com">Contact Support</a>
+    </div>
+    <div class="footer-col">
+      <h3>Legal</h3>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">&copy; 2026 RentingRadar. All rights reserved.</p>
+    <p class="footer-copy">Built for rental arbitrage investors.</p>
+  </div>
+</footer>
+
+</body>
+</html>

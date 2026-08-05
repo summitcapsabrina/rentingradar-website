@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "site_url": "https://rentingradar.com",
+  "openseo": {
+    "url": "http://127.0.0.1:3001",
+    "status": "running"
+  },
+  "gsc": {
+    "connected": true
+  },
+  "phases": {
+    "setup": "done",
+    "audit": "done",
+    "measure": "done",
+    "ai_visibility": "done",
+    "schedule": "pending"
+  },
+  "build_cmd": "none",
+  "schedule": {
+    "mode": "none",
+    "time_local": "05:00",
+    "marker": ".seo-god/last-run.json"
+  },
+  "ai_prompts_locked": [
+    "is RentingRadar any good for rental arbitrage prospecting",
+    "RentingRadar vs Airbitrage.ai for rental arbitrage",
+    "RentingRadar pricing, what does it actually cost",
+    "alternatives to Airbitrage.ai for finding rental arbitrage deals",
+    "does RentingRadar work with Zillow and Apartments.com listings",
+    "best CRM for rental arbitrage investors",
+    "how do I manage a rental arbitrage portfolio without spreadsheets",
+    "cheapest way to analyze a rental arbitrage deal before signing a lease",
+    "what do rental arbitrage investors use to track their deal pipeline",
+    "rental arbitrage software that imports listings automatically"
+  ],
+  "power_ups": {
+    "dataforseo": false,
+    "llm_keys": false,
+    "telegram": false
+  },
+  "keywords": [
+    "rental arbitrage software",
+    "rental arbitrage CRM",
+    "rental arbitrage tool",
+    "AI rental arbitrage",
+    "rentingradar",
+    "what is rental arbitrage",
+    "rental arbitrage explained",
+    "how to find a rental arbitrage market",
+    "rental arbitrage markets",
+    "best rental arbitrage tools",
+    "rental arbitrage portfolio management",
+    "rental arbitrage business",
+    "how to start rental arbitrage",
+    "rental arbitrage deal analysis",
+    "rental radar",
+    "rent radar login",
+    "the rental radar",
+    "rent radar"
+  ]
+}
