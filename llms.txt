@@ -1,0 +1,17 @@
+# RentingRadar
+
+> RentingRadar is an AI-powered CRM built for rental arbitrage and co-hosting operators. It lets operators import any property listing in one click, analyze deals with a purpose-built calculator (comps, NOI, cash flow, cash-on-cash, and a Deal Temperature score), model lease negotiations, and run post-lease operations — all in one place, with Sabrina, a built-in AI expert trained specifically on rental arbitrage.
+
+RentingRadar serves two segments: rental arbitrage operators (who lease properties long-term and sublease them as short-term rentals) and co-hosting operators (who manage short-term rentals on behalf of property owners). It does not source or supply properties — operators bring their own listings, imported from Zillow, Apartments.com, or HotPads, or added by hand.
+
+## Key pages
+
+- [Homepage](https://rentingradar.com/): product overview, features, FAQ
+- [Pricing](https://rentingradar.com/pricing): plans, prices, and what's included at each tier
+- [Pricing (machine-readable)](https://rentingradar.com/pricing.md): plain-text plan and price data
+- [RentingRadar vs Airbitrage.ai](https://rentingradar.com/vs/airbitrage-ai): how RentingRadar compares to Airbitrage.ai, a rental-arbitrage property-sourcing marketplace
+- [Blog](https://rentingradar.com/blog): guides on rental arbitrage — what it is, market selection, deal analysis, and portfolio tools
+
+## Sign up
+
+- Start a free trial (7 days, no charge until it ends, cancel anytime): https://app.rentingradar.com
