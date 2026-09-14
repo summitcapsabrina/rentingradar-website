@@ -1,0 +1,63 @@
+{
+  "date": "2026-08-08",
+  "source": "seo-god",
+  "site": "https://rentingradar.com",
+  "crawl": {
+    "pages": 8,
+    "issues": [
+      {
+        "type": "heading-order-skip",
+        "severity": "info",
+        "urls": [
+          "https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal"
+        ]
+      },
+      {
+        "type": "title-too-long",
+        "severity": "info",
+        "urls": [
+          "https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal"
+        ]
+      }
+    ]
+  },
+  "ranks": [
+    { "keyword": "rental arbitrage software", "position": null, "url": "" },
+    { "keyword": "rental arbitrage CRM", "position": null, "url": "" },
+    { "keyword": "rental arbitrage tool", "position": null, "url": "" },
+    { "keyword": "AI rental arbitrage", "position": null, "url": "" },
+    { "keyword": "rentingradar", "position": null, "url": "" },
+    { "keyword": "what is rental arbitrage", "position": null, "url": "" },
+    { "keyword": "rental arbitrage explained", "position": null, "url": "" },
+    { "keyword": "how to find a rental arbitrage market", "position": null, "url": "" },
+    { "keyword": "rental arbitrage markets", "position": null, "url": "" },
+    { "keyword": "best rental arbitrage tools", "position": null, "url": "" },
+    { "keyword": "rental arbitrage portfolio management", "position": null, "url": "" },
+    { "keyword": "rental arbitrage business", "position": null, "url": "" },
+    { "keyword": "how to start rental arbitrage", "position": null, "url": "" },
+    { "keyword": "rental arbitrage deal analysis", "position": null, "url": "" },
+    { "keyword": "rental radar", "position": null, "url": "" },
+    { "keyword": "rent radar login", "position": null, "url": "" },
+    { "keyword": "the rental radar", "position": null, "url": "" },
+    { "keyword": "rent radar", "position": null, "url": "" }
+  ],
+  "gsc": {
+    "available": true,
+    "clicks28d": 7,
+    "impressions28d": 177,
+    "top_queries": [
+      { "query": "immo radar", "clicks": 0, "impressions": 3, "position": 49.7 },
+      { "query": "property radar reviews", "clicks": 0, "impressions": 1, "position": 40 },
+      { "query": "radar booking", "clicks": 0, "impressions": 1, "position": 44 },
+      { "query": "radar property management", "clicks": 0, "impressions": 2, "position": 18.5 },
+      { "query": "rent radar", "clicks": 0, "impressions": 2, "position": 14.5 },
+      { "query": "rent radar login", "clicks": 0, "impressions": 8, "position": 8.1 },
+      { "query": "rentadar", "clicks": 0, "impressions": 2, "position": 3.5 },
+      { "query": "rental radar", "clicks": 0, "impressions": 47, "position": 8.5 },
+      { "query": "room radar", "clicks": 0, "impressions": 1, "position": 74 },
+      { "query": "the rent radar", "clicks": 0, "impressions": 6, "position": 1 },
+      { "query": "the rental radar", "clicks": 0, "impressions": 5, "position": 12.8 }
+    ]
+  },
+  "ai_visibility": { "measured": false, "prompts_ok": 0, "cited": 0, "competitors": {} }
+}

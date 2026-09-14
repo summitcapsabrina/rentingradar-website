@@ -1,0 +1,87 @@
+{
+  "date": "2026-09-14",
+  "source": "seo-god",
+  "site": "https://rentingradar.com",
+  "crawl": {
+    "pages": 11,
+    "issues": [
+      {
+        "type": "heading-order-skip",
+        "severity": "info",
+        "urls": [
+          "https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal",
+          "https://rentingradar.com/pricing",
+          "https://rentingradar.com/vs/airbitrage-ai"
+        ]
+      },
+      {
+        "type": "title-too-long",
+        "severity": "info",
+        "urls": [
+          "https://rentingradar.com/blog/best-rental-arbitrage-portfolio-tools",
+          "https://rentingradar.com/blog/how-to-analyze-a-rental-arbitrage-deal",
+          "https://rentingradar.com/vs/airbitrage-ai"
+        ]
+      },
+      {
+        "type": "meta-description-too-long",
+        "severity": "info",
+        "urls": [
+          "https://rentingradar.com/pricing",
+          "https://rentingradar.com/vs/airbitrage-ai"
+        ]
+      }
+    ]
+  },
+  "ranks": [
+    { "keyword": "rental arbitrage software", "position": null, "url": "" },
+    { "keyword": "rental arbitrage CRM", "position": null, "url": "" },
+    { "keyword": "rental arbitrage tool", "position": null, "url": "" },
+    { "keyword": "AI rental arbitrage", "position": null, "url": "" },
+    { "keyword": "rentingradar", "position": null, "url": "" },
+    { "keyword": "what is rental arbitrage", "position": null, "url": "" },
+    { "keyword": "rental arbitrage explained", "position": null, "url": "" },
+    { "keyword": "how to find a rental arbitrage market", "position": null, "url": "" },
+    { "keyword": "rental arbitrage markets", "position": null, "url": "" },
+    { "keyword": "best rental arbitrage tools", "position": null, "url": "" },
+    { "keyword": "rental arbitrage portfolio management", "position": null, "url": "" },
+    { "keyword": "rental arbitrage business", "position": null, "url": "" },
+    { "keyword": "how to start rental arbitrage", "position": null, "url": "" },
+    { "keyword": "rental arbitrage deal analysis", "position": null, "url": "" },
+    { "keyword": "rental radar", "position": null, "url": "" },
+    { "keyword": "rent radar login", "position": null, "url": "" },
+    { "keyword": "the rental radar", "position": null, "url": "" },
+    { "keyword": "rent radar", "position": null, "url": "" }
+  ],
+  "gsc": {
+    "available": true,
+    "clicks28d": 6,
+    "impressions28d": 425,
+    "top_queries": [
+      { "query": "airbitrage", "clicks": 0, "impressions": 32, "position": 7.8 },
+      { "query": "airbnb radar", "clicks": 0, "impressions": 1, "position": 2 },
+      { "query": "leasetrack.ai", "clicks": 0, "impressions": 2, "position": 59 },
+      { "query": "radar booking", "clicks": 0, "impressions": 1, "position": 55 },
+      { "query": "radar hire", "clicks": 0, "impressions": 1, "position": 58 },
+      { "query": "radar property management", "clicks": 0, "impressions": 2, "position": 19 },
+      { "query": "radar rentals", "clicks": 0, "impressions": 2, "position": 8.5 },
+      { "query": "rent radar", "clicks": 0, "impressions": 34, "position": 8.1 },
+      { "query": "rent radar login", "clicks": 0, "impressions": 7, "position": 8.1 },
+      { "query": "rent radar.in", "clicks": 0, "impressions": 2, "position": 18 },
+      { "query": "rentadar", "clicks": 0, "impressions": 5, "position": 4.8 },
+      { "query": "rental ai", "clicks": 0, "impressions": 8, "position": 58.4 },
+      { "query": "rental arbitrage software", "clicks": 0, "impressions": 6, "position": 10.3 },
+      { "query": "rental insight", "clicks": 0, "impressions": 1, "position": 69 },
+      { "query": "rental matrix", "clicks": 0, "impressions": 2, "position": 74.5 },
+      { "query": "rental radar", "clicks": 0, "impressions": 58, "position": 8.3 },
+      { "query": "rental raters", "clicks": 0, "impressions": 2, "position": 55.5 },
+      { "query": "rental trap", "clicks": 0, "impressions": 3, "position": 58.3 },
+      { "query": "rentalradar", "clicks": 0, "impressions": 17, "position": 6.4 },
+      { "query": "renting a", "clicks": 0, "impressions": 1, "position": 45 },
+      { "query": "the rent radar", "clicks": 0, "impressions": 5, "position": 4.4 },
+      { "query": "the rental radar", "clicks": 0, "impressions": 34, "position": 8.9 },
+      { "query": "what tools help track profitability in rental arbitrage?", "clicks": 0, "impressions": 5, "position": 3.8 }
+    ]
+  },
+  "ai_visibility": { "measured": false, "prompts_ok": 0, "cited": 0, "competitors": {} }
+}
