@@ -14,4 +14,4 @@ RentingRadar serves two segments: rental arbitrage operators (who lease properti
 
 ## Sign up
 
-- Start a free trial (7 days, no charge until it ends, cancel anytime): https://app.rentingradar.com
+- Start a trial (7-day free trial, card required, then $9.99–$29.99/mo depending on plan unless you cancel): https://app.rentingradar.com
