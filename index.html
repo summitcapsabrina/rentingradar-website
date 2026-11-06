@@ -447,7 +447,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);bac
 .price-yearly{color:var(--text3);font-size:.82rem;margin-bottom:24px;min-height:20px}
 .price-analysis-badge{background:rgba(99,129,250,.12);color:var(--primary);font-size:.88rem;font-weight:700;padding:9px 14px;border-radius:8px;text-align:center;margin-bottom:18px;letter-spacing:.3px}
 .price-card.popular .price-analysis-badge{background:rgba(99,129,250,.2)}
-/* Analyses + Operations limits — listed as features (green check, like the rest) but in
+/* Analyses + Operations + Co-Hosting limits — listed as features (green check, like the rest) but in
    accent/purple bold text so they read as the emphasized, plan-defining entitlements. */
 .price-features li.price-feat-limit{color:var(--primary);font-weight:700}
 .price-features{list-style:none;margin-bottom:28px}
@@ -1568,9 +1568,9 @@ document.addEventListener('click', function(e){
 var billingPeriod = 'yearly';
 
 var TIERS = {
-  basic:    { name:'Basic',    monthly:9.99,  yearly:89.99,  analysisLimit:'1 analysis / month', operationsLimit:'1 Operations property', desc:'Analyze 1 deal per month — perfect for getting started', features:['Pipeline management','Full-scope property profiles','Follow-up reminders & notifications','Expense tracking','CSV import & export'], disabled:['Dark mode & color themes'] },
-  standard: { name:'Standard', monthly:19.99, yearly:199.99, analysisLimit:'10 analyses / month', operationsLimit:'Up to 5 Operations properties', desc:'Analyze up to 10 deals per month with full tools', features:['Everything in Basic','Dark mode & 8 color themes'], disabled:[] },
-  pro:      { name:'Pro',      monthly:29.99, yearly:289.99, analysisLimit:'Unlimited analyses', operationsLimit:'Unlimited Operations properties', desc:'Unlimited analyses for serious operators', features:['Everything in Standard','Negotiation Forecasting Tools','Priority feature requests'], disabled:[] }
+  basic:    { name:'Basic',    monthly:9.99,  yearly:89.99,  analysisLimit:'1 analysis / month', operationsLimit:'1 Operations property', cohostLimit:'Up to 5 Co-Hosting properties', desc:'Analyze 1 deal per month — perfect for getting started', features:['Pipeline management','Full-scope property profiles','Follow-up reminders & notifications','Expense tracking','CSV import & export'], disabled:['Dark mode & color themes'] },
+  standard: { name:'Standard', monthly:19.99, yearly:199.99, analysisLimit:'10 analyses / month', operationsLimit:'Up to 5 Operations properties', cohostLimit:'Up to 10 Co-Hosting properties', desc:'Analyze up to 10 deals per month with full tools', features:['Everything in Basic','Dark mode & 8 color themes'], disabled:[] },
+  pro:      { name:'Pro',      monthly:29.99, yearly:289.99, analysisLimit:'Unlimited analyses', operationsLimit:'Unlimited Operations properties', cohostLimit:'Unlimited Co-Hosting properties', desc:'Unlimited analyses for serious operators', features:['Everything in Standard','Negotiation Forecasting Tools','Priority feature requests'], disabled:[] }
 };
 
 function setBillingPeriod(period){
@@ -1614,6 +1614,7 @@ function renderPricingCards(){
     html += '<ul class="price-features">';
     if(t.analysisLimit) html += '<li class="price-feat-limit">'+t.analysisLimit+'</li>';
     if(t.operationsLimit) html += '<li class="price-feat-limit">'+t.operationsLimit+'</li>';
+    if(t.cohostLimit) html += '<li class="price-feat-limit">'+t.cohostLimit+'</li>';
     t.features.forEach(function(f){ html += '<li>'+f+'</li>'; });
     t.disabled.forEach(function(f){ html += '<li style="color:var(--text3);opacity:.5">'+f+'</li>'; });
     html += '</ul>';
